@@ -20,6 +20,3 @@ def returnAll():
 def returnOne(name):
     langs = [language for language in languages if language['name' == name]]
     return jsonify({'language ' : langs[0]})
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
