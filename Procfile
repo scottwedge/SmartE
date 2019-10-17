@@ -1,1 +1,1 @@
-web gunicorn smartexpenses:app
+web gunicorn run:app
