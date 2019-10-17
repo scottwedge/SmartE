@@ -1,9 +1,5 @@
 from flask import Flask
+from smartexpenses.routes import root
 
 app = Flask(__name__)
-
-languages = [
-    {'name' : 'JavaScript'},
-    {'name' : 'Python'},
-    {'name' : 'Ruby'}
-]
+app.register_blueprint(root)
