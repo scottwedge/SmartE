@@ -14,7 +14,6 @@ def test():
 
 @root.route('/lang', methods=['GET'])
 def returnAll():
-    print(DB_URI)
     return jsonify({'languages' : languages})
 
 @root.route('/lang/<string:name>', methods=['GET'])
