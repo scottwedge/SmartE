@@ -1,0 +1,1 @@
+from smartexpenses import db
