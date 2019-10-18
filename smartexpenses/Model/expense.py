@@ -1,3 +1,4 @@
+from smartexpenses import db
 
 class Expense(db.Model):
     __tablename__ = 'expense'
