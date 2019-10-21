@@ -10,6 +10,7 @@ else:
     from dotenv import load_dotenv
     load_dotenv()
     DB_URL = os.getenv('MYSQL_URL')
+    print(DB_URL)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
@@ -21,9 +22,8 @@ db = SQLAlchemy(app)
 from smartexpenses.Controller.root import root
 from smartexpenses.Controller.user_controller import user_routes
        
-db.create_all()
-
 app.register_blueprint(root)
 app.register_blueprint(user_routes)
 
+db.create_all()
 
