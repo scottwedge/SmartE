@@ -26,4 +26,4 @@ from smartexpenses.Controller.user_controller import user_routes
 app.register_blueprint(root)
 app.register_blueprint(user_routes)
 
-
+db.create_all()
