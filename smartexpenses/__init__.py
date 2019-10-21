@@ -10,6 +10,7 @@ else:
     from dotenv import load_dotenv
     load_dotenv()
     DB_URL = os.getenv('MYSQL_URL')
+    print('HELLOOO')
     print(DB_URL)
 
 app = Flask(__name__)
@@ -25,5 +26,4 @@ from smartexpenses.Controller.user_controller import user_routes
 app.register_blueprint(root)
 app.register_blueprint(user_routes)
 
-db.create_all()
 
