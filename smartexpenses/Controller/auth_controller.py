@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from binascii import hexlify
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
 from smartexpenses.Model.user import User
 
 parser = reqparse.RequestParser()
@@ -47,6 +47,9 @@ class UserLogin(Resource):
 
         if not current_user:
             return {'message': 'User {} doesn\'t exist'.format(data['username'])}
+
+        if User.find_by_email(data['username']):
+            return {'message': 'User {} already exists'.format(data['username'])}
         
         if User.verify_hash(data['password'], current_user.password):
             access_token = create_access_token(identity = data['username'])

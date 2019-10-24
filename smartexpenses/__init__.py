@@ -12,7 +12,6 @@ else:
     from dotenv import load_dotenv
     load_dotenv()
     DB_URL = os.getenv('MYSQL_URL')
-    print(DB_URL)
 
 app = Flask(__name__)
 api = Api(app)
