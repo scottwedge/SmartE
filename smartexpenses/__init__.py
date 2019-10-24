@@ -24,15 +24,15 @@ db = SQLAlchemy(app)
 api = Api(app)
 
 from smartexpenses.Controller.root import root
-from smartexpenses.Controller.user_controller import user_routes
-       
+from smartexpenses.Controller.auth_controller
+
 app.register_blueprint(root)      
-api.add_resource(user_routes.UserRegistration,  '/registration')
-api.add_resource(user_routes.UserLogin,         '/login')
-api.add_resource(user_routes.UserLogoutAccess,  '/logout/access')
-api.add_resource(user_routes.UserLogoutRefresh, '/logout/refresh')
-api.add_resource(user_routes.TokenRefresh,      '/token/refresh')
-api.add_resource(user_routes.AllUsers,          '/users')
-api.add_resource(user_routes.SecretResource,    '/secret')
+api.add_resource(auth_controller.UserRegistration,  '/registration')
+api.add_resource(auth_controller.UserLogin,         '/login')
+api.add_resource(auth_controller.UserLogoutAccess,  '/logout/access')
+api.add_resource(auth_controller.UserLogoutRefresh, '/logout/refresh')
+api.add_resource(auth_controller.TokenRefresh,      '/token/refresh')
+api.add_resource(auth_controller.AllUsers,          '/users')
+api.add_resource(auth_controller.SecretResource,    '/secret')
 
 db.create_all()
