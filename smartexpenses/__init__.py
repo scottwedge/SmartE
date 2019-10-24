@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 api = Api(app)
 
 from smartexpenses.Controller.root import root
-from smartexpenses.Controller.auth_controller
+from smartexpenses.Controller import auth_controller
 
 app.register_blueprint(root)      
 api.add_resource(auth_controller.UserRegistration,  '/registration')
