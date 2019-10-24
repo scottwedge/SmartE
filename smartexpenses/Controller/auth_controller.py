@@ -1,14 +1,47 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from binascii import hexlify
 from smartexpenses.Model.user import User
 
+parser = reqparse.RequestParser()
+parser.add_argument('surname', help = 'This field cannot be blank', required = True)
+parser.add_argument('forename', help = 'This field cannot be blank', required = True)
+parser.add_argument('username', help = 'This field cannot be blank', required = True)
+parser.add_argument('email', help = 'This field cannot be blank', required = True)
+parser.add_argument('password', help = 'This field cannot be blank', required = True)
+
 class UserRegistration(Resource):
     def post(self):
-        return {'message': User registration}
+        data = parser.parse_args()
+        
+        if UserModel.find_by_username(data['username']):
+            return {'message': 'User {} already exists'.format(data['username'])}
+
+        if UserModel.find_by_email(data['username']):
+            return {'message': 'User {} already exists'.format(data['username'])}
+        
+        new_user = UserModel(
+            surname = data['surname'],
+            forename = data['forename'],
+            username = data['username'],
+            email = data['email'],
+            password = UserModel.generate_hash(data['password'])
+        )
+        
+        try:
+            new_user.save_to_db()
+            access_token = create_access_token(identity = data['username'])
+            refresh_token = create_refresh_token(identity = data['username'])
+            return {
+                'message': 'User {} was created'.format(data['username']),
+                'access_token': access_token,
+                'refresh_token': refresh_token
+                }
+        except:
+            return {'message': 'Something went wrong'}, 500
 
 class UserLogin(Resource):
     def post(self):
-        return {'message': User login}
+        return {'message': 'User login'}
 
 class UserLogoutAccess(Resource):
     def post(self):
@@ -38,51 +71,3 @@ class SecretResource(Resource):
         return {
             'answer': 42
         }
-      
-
-
-
-
-# @user_routes.route('/signup', methods=['GET'])
-# def signup():
-#     if not request.json or 
-#        not 'username'
-#        not 'username' 
-#     in request.json:
-#         abort(400)
-#     user = {
-#         'username' : request.json['username'],
-#         'email' : request.json['email'],
-#         'password' : request.json['password'],
-#         'admin' : 0,
-#     }
-#     User.add(user)
-#     return jsonify({'user': user}), 201
-
-# @user_routes.route('/signup', methods=['POST'])
-# def login():
-#     key = hexlify(os.urandom(length))
-#     user = {
-#         'username' : request.json['username'],
-#         'email' : request.json['email'],
-#         'password' : request.json['password'],
-#         'admin' : 0,
-#     }
-#     User.add(user)
-#     return jsonify({'user': user}), 201
-
-# @user_routes.route('/user', methods=['GET'])
-# def returnAll():
-#     users = User.query.all()
-#     return jsonify({'users': users}), 201
-
-# @user_routes.route('/user/<user_id>', methods=['GET'])
-# def returnOne(user_id):
-#     user = User.query.get(user_id)
-#     if not user:
-#         abort(404)
-#     return jsonify({'user ' : user})
-
-# @user_routes.errorhandler(404)
-# def not_found(error):
-#     return make_response(jsonify({'error': 'Not found'}), 404)
