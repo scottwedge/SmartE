@@ -1,6 +1,8 @@
 from flask_restful import Resource, reqparse
 from binascii import hexlify
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
+from flask_jwt_extended import (create_access_token, create_refresh_token, 
+                                jwt_required, jwt_refresh_token_required, 
+                                get_jwt_identity, get_raw_jwt)
 from smartexpenses.Model.user import User
 
 parser = reqparse.RequestParser()
@@ -17,15 +19,16 @@ class UserRegistration(Resource):
         if User.find_by_username(data['username']):
             return {'message': 'User {} already exists'.format(data['username'])}
 
-        if User.find_by_email(data['username']):
-            return {'message': 'User {} already exists'.format(data['username'])}
+        if User.find_by_email(data['email']):
+            return {'message': 'User {} already exists'.format(data['email'])}
         
         new_user = User(
-            surname = data['surname'],
             forename = data['forename'],
+            surname = data['surname'],
             username = data['username'],
             email = data['email'],
-            password = User.generate_hash(data['password'])
+            password = User.generate_hash(data['password']),
+            admin = 0
         )
         
         try:
@@ -47,9 +50,6 @@ class UserLogin(Resource):
 
         if not current_user:
             return {'message': 'User {} doesn\'t exist'.format(data['username'])}
-
-        if User.find_by_email(data['username']):
-            return {'message': 'User {} already exists'.format(data['username'])}
         
         if User.verify_hash(data['password'], current_user.password):
             access_token = create_access_token(identity = data['username'])
@@ -79,11 +79,10 @@ class TokenRefresh(Resource):
       
 class AllUsers(Resource):
     def get(self):
-        return {'message': 'List of users'}
+        return User.return_all()
 
     def delete(self):
-        return {'message': 'Delete all users'}
-      
+        return User.delete_all()
       
 class SecretResource(Resource):
     def get(self):

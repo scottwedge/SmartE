@@ -4,13 +4,16 @@ from passlib.hash import pbkdf2_sha256 as sha256
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    surname = db.Column(db.String(32), nullable=False)
     forename = db.Column(db.String(32), nullable=False)
+    surname = db.Column(db.String(32), nullable=False)
     username = db.Column(db.String(32), index=True, unique=True, nullable=False)
     email = db.Column(db.String(100), index=True, unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     admin = db.Column(db.Boolean, nullable=False)
     expenses = db.relationship('Expense', backref='user', lazy=True)
+
+    def __repr__(self):
+        return "<User(username={self.username})>".format(self=self)
 
     def save_to_db(self):
         db.session.add(self)
@@ -31,7 +34,8 @@ class User(db.Model):
                 'name': x.surname + ' ' + x.forename,
                 'username': x.username,
                 'email': x.username,
-                'password': x.password
+                'password': x.password,
+                'admin' : bool(x.admin)
             }
         return {'users': list(map(lambda x: to_json(x), User.query.all()))}
 
