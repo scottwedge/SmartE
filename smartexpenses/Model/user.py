@@ -16,7 +16,7 @@ class User(db.Model):
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
-        @classmethod
+    @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
@@ -24,7 +24,7 @@ class User(db.Model):
     def return_all(cls):
         def to_json(x):
             return {
-                'name': x.surname + ' ' + x.forename
+                'name': x.surname + ' ' + x.forename,
                 'username': x.username,
                 'email': x.username,
                 'password': x.password
