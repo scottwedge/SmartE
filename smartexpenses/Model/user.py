@@ -12,15 +12,6 @@ class User(db.Model):
     admin = db.Column(db.Boolean, nullable=False)
     expenses = db.relationship('Expense', backref='user', lazy=True)
 
-    def __init__(self, username, email, password, admin):
-        self.username = username
-        self.email = email
-        self.password = password
-        self.admin = admin
-
-    def __rep__(self):
-        return "User('{self.username}', '{self.email}')"
-
     @classmethod
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
@@ -33,7 +24,9 @@ class User(db.Model):
     def return_all(cls):
         def to_json(x):
             return {
+                'name': x.surname + ' ' + x.forename
                 'username': x.username,
+                'email': x.username,
                 'password': x.password
             }
         return {'users': list(map(lambda x: to_json(x), User.query.all()))}

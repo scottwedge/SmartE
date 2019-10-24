@@ -13,18 +13,18 @@ class UserRegistration(Resource):
     def post(self):
         data = parser.parse_args()
         
-        if UserModel.find_by_username(data['username']):
+        if User.find_by_username(data['username']):
             return {'message': 'User {} already exists'.format(data['username'])}
 
-        if UserModel.find_by_email(data['username']):
+        if User.find_by_email(data['username']):
             return {'message': 'User {} already exists'.format(data['username'])}
         
-        new_user = UserModel(
+        new_user = User(
             surname = data['surname'],
             forename = data['forename'],
             username = data['username'],
             email = data['email'],
-            password = UserModel.generate_hash(data['password'])
+            password = User.generate_hash(data['password'])
         )
         
         try:
