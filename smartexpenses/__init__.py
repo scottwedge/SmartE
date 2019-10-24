@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api
 import os
 
 ON_HEROKU = 'ON_HEROKU' in os.environ
@@ -20,10 +21,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+api = Api(app)
+
 from smartexpenses.Controller.root import root
 from smartexpenses.Controller.user_controller import user_routes
        
-app.register_blueprint(root)
-app.register_blueprint(user_routes)
+app.register_blueprint(root)      
+api.add_resource(user_routes.UserRegistration,  '/registration')
+api.add_resource(user_routes.UserLogin,         '/login')
+api.add_resource(user_routes.UserLogoutAccess,  '/logout/access')
+api.add_resource(user_routes.UserLogoutRefresh, '/logout/refresh')
+api.add_resource(user_routes.TokenRefresh,      '/token/refresh')
+api.add_resource(user_routes.AllUsers,          '/users')
+api.add_resource(user_routes.SecretResource,    '/secret')
 
 db.create_all()
