@@ -4,6 +4,7 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 jwt_required, jwt_refresh_token_required, 
                                 get_jwt_identity, get_raw_jwt)
 from smartexpenses.Model.user import User
+from smartexpenses.Model import RevokedTokenModel
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', help = 'This field cannot be blank', required = True)
@@ -93,6 +94,7 @@ class AllUsers(Resource):
         return User.delete_all()
       
 class SecretResource(Resource):
+    @jwt_refresh_token_required
     def get(self):
         return {
             'answer': 42
