@@ -24,10 +24,10 @@ class UserRegistration(Resource):
         
         try:
             new_user.save_to_db()
-            access_token = create_access_token(identity = data['username'])
-            refresh_token = create_refresh_token(identity = data['username'])
+            access_token = create_access_token(identity = data['email'])
+            refresh_token = create_refresh_token(identity = data['email'])
             return {
-                'message': 'User {} was created'.format(data['username']),
+                'message': 'User {} was created'.format(data['email']),
                 'access_token': access_token,
                 'refresh_token': refresh_token
                 }
@@ -43,10 +43,10 @@ class UserLogin(Resource):
             return {'message': 'User {} doesn\'t exist'.format(data['email'])}
         
         if User.verify_hash(data['password'], current_user.password):
-            access_token = create_access_token(identity = data['username'])
-            refresh_token = create_refresh_token(identity = data['username'])
+            access_token = create_access_token(identity = data['email'])
+            refresh_token = create_refresh_token(identity = data['email'])
             return {
-                'message': 'Logged in as {}'.format(current_user.username),
+                'message': 'Logged in as {}'.format(current_user.email),
                 'access_token': access_token,
                 'refresh_token': refresh_token
                 }
