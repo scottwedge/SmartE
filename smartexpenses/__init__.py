@@ -23,7 +23,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
 app.config['JWT_BLACKLIST_ENABLED'] = True
-app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['refresh']
 
 @app.before_first_request
 def create_tables():

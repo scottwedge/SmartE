@@ -25,7 +25,6 @@ class UserRegistration(Resource):
         
         try:
             new_user.save_to_db()
-            access_token = create_access_token(identity = data['email'])
             refresh_token = create_refresh_token(identity = data['email'])
             return {
                 'message': 'User {} was created'.format(data['email']),
@@ -44,7 +43,6 @@ class UserLogin(Resource):
             return {'message': 'User {} doesn\'t exist'.format(data['email'])}
         
         if User.verify_hash(data['password'], current_user.password):
-            access_token = create_access_token(identity = data['email'])
             refresh_token = create_refresh_token(identity = data['email'])
             return {
                 'message': 'Logged in as {}'.format(current_user.email),
@@ -53,18 +51,6 @@ class UserLogin(Resource):
                 }
         else:
             return {'message': 'Wrong credentials'}
-
-class UserLogoutAccess(Resource):
-    @jwt_required
-    def post(self):
-        jti = get_raw_jwt()['jti']
-        try:
-            revoked_token = RevokedTokenModel(jti = jti)
-            revoked_token.add()
-            return {'message': 'Access token has been revoked'}
-        except:
-            return {'message': 'Something went wrong'}, 500
-      
       
 class UserLogoutRefresh(Resource):
     @jwt_refresh_token_required
@@ -76,16 +62,7 @@ class UserLogoutRefresh(Resource):
             return {'message': 'Refresh token has been revoked'}
         except:
             return {'message': 'Something went wrong'}, 500
-      
-      
-class TokenRefresh(Resource):
-    @jwt_refresh_token_required
-    def post(self):
-        current_user = get_jwt_identity()
-        access_token = create_access_token(identity = current_user)
-        return {'access_token': access_token}
-      
-      
+         
 class AllUsers(Resource):
     def get(self):
         return User.return_all()
