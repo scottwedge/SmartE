@@ -5,7 +5,7 @@ from smartexpenses.Model.expense import Expense
 
 class AllExpenses(Resource):
     def get(self):
-        return {'message': 'List of users'}
+        return {'message': 'List of expenses'}
 
     def delete(self):
-        return {'message': 'Delete all users'}
+        return {'message': 'Delete all expenses'}

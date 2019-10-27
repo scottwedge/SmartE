@@ -41,10 +41,7 @@ from smartexpenses.Controller import expenses_controller
 app.register_blueprint(root)
 api.add_resource(auth_controller.UserRegistration,  '/register')
 api.add_resource(auth_controller.UserLogin,         '/login')
-api.add_resource(auth_controller.UserLogoutAccess,  '/logout/access')
-api.add_resource(auth_controller.UserLogoutRefresh, '/logout/refresh')
-api.add_resource(auth_controller.TokenRefresh,      '/token/refresh')
+api.add_resource(auth_controller.UserLogoutRefresh, '/logout')
 api.add_resource(auth_controller.AllUsers,          '/users')
 api.add_resource(auth_controller.SecretResource,    '/secret')
-
 api.add_resource(expenses_controller.AllExpenses,   '/expenses')
