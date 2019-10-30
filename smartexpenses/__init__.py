@@ -44,4 +44,5 @@ api.add_resource(auth_controller.UserLogin,         '/login')
 api.add_resource(auth_controller.UserLogoutRefresh, '/logout')
 api.add_resource(auth_controller.AllUsers,          '/users')
 api.add_resource(auth_controller.SecretResource,    '/secret')
+
 api.add_resource(expenses_controller.AllExpenses,   '/expenses')
