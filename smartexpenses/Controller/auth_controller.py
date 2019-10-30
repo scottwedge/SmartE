@@ -68,6 +68,7 @@ class AllUsers(Resource):
         return User.delete_all()
       
 class SecretResource(Resource):
+    @jwt_refresh_token_required
     def get(self):
         return {
             'answer': 42
