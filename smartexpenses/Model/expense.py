@@ -14,3 +14,8 @@ class Expense(db.Model):
     categoryID = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.seesion.commit()

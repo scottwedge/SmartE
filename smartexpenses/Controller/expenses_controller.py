@@ -12,4 +12,4 @@ class AllExpenses(Resource):
 
 class GetExpenseById(Resource):
     def get(self):
-        return {'message': }
+        return {'message': 'return some message'}
