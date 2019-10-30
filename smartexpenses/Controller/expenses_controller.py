@@ -9,3 +9,7 @@ class AllExpenses(Resource):
 
     def delete(self):
         return {'message': 'Delete all expenses'}
+
+class GetExpenseById(Resource):
+    def get(self):
+        return {'message': }
