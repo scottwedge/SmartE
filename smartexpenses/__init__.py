@@ -15,13 +15,15 @@ else:
 
 app = Flask(__name__)
 api = Api(app)
-jwt = JWTManager(app)
-db = SQLAlchemy(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+
+db = SQLAlchemy(app)
+jwt = JWTManager(app)
+
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['refresh']
 app.config['PROPAGATE_EXCEPTIONS'] = True
@@ -33,7 +35,7 @@ def create_tables():
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
-    return smartexpenses.Model.RevokedTokenModel.is_jti_blacklisted(jti)
+    return Model.RevokedTokenModel.is_jti_blacklisted(jti)
 
 from smartexpenses.Controller.root import root
 from smartexpenses.Controller import auth_controller

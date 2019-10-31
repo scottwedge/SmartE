@@ -21,7 +21,7 @@ class UserRegistration(Resource):
             password = User.generate_hash(data['password']),
             admin = 0
         )
-        
+
         try:
             new_user.save_to_db()
             refresh_token = create_refresh_token(identity = data['email'])
@@ -29,8 +29,8 @@ class UserRegistration(Resource):
                 'message': 'User {} was created'.format(data['email']),
                 'refresh_token': refresh_token
                 }
-        except:
-            return {'message': 'Something went wrong'}, 500
+        except Exception as error:
+            return {'message': repr(error)}, 500
 
 class UserLogin(Resource):
     def post(self):
