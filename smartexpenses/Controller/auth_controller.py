@@ -70,6 +70,4 @@ class AllUsers(Resource):
 class SecretResource(Resource):
     @jwt_refresh_token_required
     def get(self):
-        return {
-            'answer': 42
-        }
+        return { 'answer': 42 }, 200

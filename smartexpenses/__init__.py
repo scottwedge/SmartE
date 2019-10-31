@@ -16,6 +16,7 @@ else:
 app = Flask(__name__)
 api = Api(app)
 jwt = JWTManager(app)
+jwt._set_error_handler_callbacks(api)
 db = SQLAlchemy(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
