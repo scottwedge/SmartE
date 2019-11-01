@@ -17,7 +17,12 @@ parser.add_argument('user_id', help = 'This field cannot be blank', required = T
 
 class AllExpenses(Resource):
     def get(self):
-        return Expense.return_all()
+        try:
+            return Expense.return_all()
+        except:
+            return {'message':'something went wrong'}
+    
+
 
     def delete(self):
         return {'message': 'Delete all expenses'}
