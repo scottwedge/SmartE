@@ -48,6 +48,7 @@ class AddExpenses(Resource):
             new_expense.save_to_db()
             return{ 'message':'Your expense {} was created'.format(data['title'])},200
         except:
+            print(data)
             return {'message': 'Something went wrong'}, 500
     
     
