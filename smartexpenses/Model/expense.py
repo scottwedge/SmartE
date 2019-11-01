@@ -19,3 +19,26 @@ class Expense(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.seesion.commit()
+
+    @classmethod
+    def find_by_title(cls,title):
+        return cls.query.filter_by(title=title).all()
+    
+    @classmethod
+    def return_all(cls):
+        def to_json(x):
+            return{
+                'title':x.title,
+                'private':x.private,
+                'currency':x.currency,
+                'value':x.value,
+                'valueUSD':x.valueUSD,
+                'lattitude':x.lattitude,
+                'longitude':x.longitude,
+                'address':x.address,
+                'categoryID':x.categoryID,
+                'date':x.date,
+                'user_id':x.user_id
+
+            }
+        return {'expenses': list(map(lambda x: to_json(x), Expense.query.all()))}
