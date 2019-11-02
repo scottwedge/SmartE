@@ -81,9 +81,11 @@ class UserLogoutRefresh(Resource):
             }, 500
          
 class AllUsers(Resource):
+    @jwt_refresh_token_required
     def get(self):
         return User.return_all()
 
+    @jwt_refresh_token_required
     def delete(self):
         return User.delete_all()
       

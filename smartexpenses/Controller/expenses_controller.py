@@ -20,6 +20,7 @@ parser.add_argument('categoryID', help = 'This field cannot be blank', required 
 parser.add_argument('user_id', help = 'This field cannot be blank', required = True)
 
 class AllExpenses(Resource):
+    @jwt_refresh_token_required
     def get(self):
         try:
             return Expense.return_all()
@@ -29,6 +30,7 @@ class AllExpenses(Resource):
                 'status' : 1
             }, 500
 
+    @jwt_refresh_token_required
     def delete(self):
         return {'message': 'Delete all expenses'}
 
