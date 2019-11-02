@@ -54,7 +54,7 @@ class UserLogin(Resource):
             return {
                 'message': 'Logged in as {}'.format(current_user.email),
                 'refresh_token': refresh_token,
-                'status' : 1
+                'status' : 0
             }
         else:
             return {
