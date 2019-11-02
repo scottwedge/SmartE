@@ -21,7 +21,8 @@ class UserRegistration(Resource):
         
         new_user = User(
             email = data['email'],
-            password = User.generate_hash(data['password'])
+            password = User.generate_hash(data['password']),
+            admin = 0
         )
 
         try:
