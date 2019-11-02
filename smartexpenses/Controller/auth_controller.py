@@ -2,8 +2,8 @@ from flask_restful import Resource, reqparse
 from binascii import hexlify
 from flask_jwt_extended import (create_refresh_token, jwt_required, jwt_refresh_token_required, 
                                 get_jwt_identity, get_raw_jwt)
-from projectx.Model.user import User
-from projectx.Model import RevokedTokenModel
+from smartexpenses.Model.user import User
+from smartexpenses.Model import RevokedTokenModel
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', help = 'This field cannot be blank', required = True)
