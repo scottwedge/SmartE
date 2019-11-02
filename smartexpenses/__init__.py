@@ -49,4 +49,4 @@ api.add_resource(auth_controller.AllUsers,          '/users')
 api.add_resource(auth_controller.SecretResource,    '/secret')
 
 api.add_resource(expenses_controller.AllExpenses,   '/expenses')
-api.add_resource(expenses_controller.AddExpenses,   '/addExpenses')
+api.add_resource(expenses_controller.AddExpense,   '/addexpense')
