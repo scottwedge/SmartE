@@ -1,6 +1,10 @@
 from flask_restful import Resource, reqparse, inputs
 from binascii import hexlify
+import datetime
 from smartexpenses.Model.expense import Expense
+# Formatting time ,when add a column, add the current time
+tzx = datetime.timezone(datetime.timedelta(hours=1))
+d = datetime.datetime.now(tz=tzx)
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', help = 'This field cannot be blank', required = True)
@@ -12,7 +16,7 @@ parser.add_argument('lattitude', help = 'This field cannot be blank', required =
 parser.add_argument('longitude', help = 'This field cannot be blank', required = True)
 parser.add_argument('address', help = 'This field cannot be blank', required = True)
 parser.add_argument('categoryID', help = 'This field cannot be blank', required = True)
-parser.add_argument('date', help = 'This field cannot be blank', required = True)
+# parser.add_argument('date', help = 'This field cannot be blank', required = True)
 parser.add_argument('user_id', help = 'This field cannot be blank', required = True)
 
 class AllExpenses(Resource):
@@ -20,9 +24,8 @@ class AllExpenses(Resource):
         try:
             return Expense.return_all()
         except:
-            return {'message':'something went wrong'}
+            return {'message':'something  always went wrong'}
     
-
 
     def delete(self):
         return {'message': 'Delete all expenses'}
@@ -45,15 +48,16 @@ class AddExpenses(Resource):
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
-            date = data['date'],
+            # formatting time
+            date = d.strftime('%Y-%m-%d %H:%M:%S'),
             user_id = data['user_id']
         )
 
         try:
-            new_expense.save_to_db()
-            return{ 'message':'Your expense {} was created'.format(data['title'])},200
-        except:
-            print(data)
-            return {'message': 'Something went wrong'}, 500
+            new_expense.save_to_db()           
+            return { 'message':'Your expense {} was created'.format(data['title'])}, 200
+    
+        except Exception as error:
+            return {'message': repr(error)}, 500
     
     
