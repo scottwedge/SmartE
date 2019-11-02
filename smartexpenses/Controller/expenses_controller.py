@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse, inputs
 from binascii import hexlify
+from flask_jwt_extended import jwt_refresh_token_required
 from smartexpenses.Model.expense import Expense
 import datetime
 
