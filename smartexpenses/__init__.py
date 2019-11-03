@@ -50,3 +50,4 @@ api.add_resource(auth_controller.SecretResource,    '/secret')
 
 api.add_resource(expenses_controller.AllExpenses,   '/expenses')
 api.add_resource(expenses_controller.AddExpense,   '/addexpense')
+api.add_resource(expenses_controller.GetExpenseById,   '/expenses/<id>')

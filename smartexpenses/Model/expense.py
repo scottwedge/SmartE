@@ -27,8 +27,7 @@ class Expense(db.Model):
     
     @classmethod
     def return_all(cls):
-        def to_json(x):
-                     
+        def to_json(x):                 
             try:
                 return{
                     'title':x.title,
@@ -50,7 +49,26 @@ class Expense(db.Model):
 
 
     @classmethod
-    def find_by_title(cls,title):
-        return cls.query.filter_by(title=title).all()
+    def find_by_id(cls,id):
+        expense = db.session.query(Expense).filter(Expense.id == id).first()
+        try:
+            return{
+                'title':expense.title,
+                'private':expense.private,
+                'currency':expense.currency,
+                'value':expense.value,
+                'valueUSD':expense.valueUSD,
+                'lattitude':expense.lattitude,
+                'longitude':expense.longitude,
+                'address':expense.address,
+                'categoryID':expense.categoryID,
+                'date':expense.date.strftime('%Y-%m-%d %H:%M:%S'),
+                'user_id':expense.user_id
+            }
+        except:
+            return{'message':'I cannot get this message'}
+
+
+        
 
 

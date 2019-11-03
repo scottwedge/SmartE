@@ -35,8 +35,16 @@ class AllExpenses(Resource):
         return {'message': 'Delete all expenses'}
 
 class GetExpenseById(Resource):
-    def get(self):
-        return {'message': 'return some message'}
+    @jwt_refresh_token_required
+    def get(self,id):
+        try:
+            return Expense.find_by_id(id)
+        except Exception as error:
+            return {
+                'message':repr(error),
+                'status':1
+            }, 500
+        
 
 class AddExpense(Resource):
     @jwt_refresh_token_required
