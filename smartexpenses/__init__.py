@@ -48,6 +48,9 @@ api.add_resource(auth_controller.UserLogoutRefresh, '/logout')
 api.add_resource(auth_controller.AllUsers,          '/users')
 api.add_resource(auth_controller.SecretResource,    '/secret')
 
-api.add_resource(expenses_controller.AllExpenses,   '/expenses')
-api.add_resource(expenses_controller.AddExpense,   '/addexpense')
+api.add_resource(expenses_controller.AllExpenses,   '/expense/all')
+api.add_resource(expenses_controller.AddExpense,   '/expense/add')
 api.add_resource(expenses_controller.GetExpenseById,   '/expenses/<id>')
+# api.add_resource(expenses_controller.GetExpenseById,   '/expenses/recent/<number>')
+
+api.add_resource(expenses_controller.ReturnImages,   '/expense/image')

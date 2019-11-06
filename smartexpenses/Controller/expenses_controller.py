@@ -33,6 +33,41 @@ class AllExpenses(Resource):
     @jwt_refresh_token_required
     def delete(self):
         return {'message': 'Delete all expenses'}
+    
+class ReturnImages(Resource):
+    @jwt_refresh_token_required
+    def get(self):
+        allImageUrl = [
+            {
+            "id":1,
+            "url":"https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg"
+            },
+             {
+            "id":2,
+            "url":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg"
+            }, 
+            {
+            "id":3,
+            "url":"http://www.xwlxw.com/uploads/allimg/150928/7-15092Q15159544.png"
+            }, 
+            {
+            "id":4,
+            "url":"https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg"
+            }, 
+            {
+            "id":5,
+            "url":"hhttps://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg"
+            },
+             {
+            "id":6,
+            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg"
+            }, 
+            {
+            "id":7,
+            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
+            }
+        ] 
+        return allImageUrl
 
 class GetExpenseById(Resource):
     @jwt_refresh_token_required
