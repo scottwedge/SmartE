@@ -79,7 +79,17 @@ class GetExpenseById(Resource):
                 'message':repr(error),
                 'status':1
             }, 500
-        
+
+class RecentExpense(Resource):
+    @jwt_refresh_token_required
+    def get(self,number):
+        try:
+            return Expense.recent_expense(number)
+        except Exception as error:
+            return { 
+                'message': repr(error),
+                'status' : 1
+            }, 500  
 
 class AddExpense(Resource):
     @jwt_refresh_token_required
