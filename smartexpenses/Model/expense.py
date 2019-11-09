@@ -1,4 +1,5 @@
 from smartexpenses import db
+from smartexpenses.Model.user import User
 import datetime
 import json
 
@@ -69,26 +70,12 @@ class Expense(db.Model):
             return{'message':'I cannot get this message'}
 
     @classmethod
-    def recent_expense(cls,number):
-        recent_expense = db.session.query(Expense).filter(Expense.user_id = userid).limit(number).all()
-        def to_json(x):                 
-            try:
-                return{
-                    'title':x.title,
-                    'private':x.private,
-                    'currency':x.currency,
-                    'value':x.value,
-                    'valueUSD':x.valueUSD,
-                    'lattitude':x.lattitude,
-                    'longitude':x.longitude,
-                    'address':x.address,
-                    'categoryID':x.categoryID,
-                    'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
-                    'user_id':x.user_id
+    def find_id_by_email(cls,email):    
+        current_user = db.session.query(User).filter(User.email == email).first()
+        current_id = current_user.id
+        print(current_id)
+        return current_id
 
-                }
-            except:
-                return{'message':'I cannot get this message'}
-        return {'expenses': list(map(lambda x: to_json(x), recent_expense))}
+        
 
 
