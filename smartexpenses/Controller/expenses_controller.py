@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse, inputs
 from binascii import hexlify
-from flask_jwt_extended import jwt_refresh_token_required
+from flask_jwt_extended import jwt_refresh_token_required,get_jwt_identity
+import jwt
 from smartexpenses.Model.expense import Expense
 import datetime
 
@@ -12,12 +13,11 @@ parser.add_argument('title', help = 'This field cannot be blank', required = Tru
 parser.add_argument('private', help = 'This field cannot be blank', type=inputs.boolean, required = True)
 parser.add_argument('currency', help = 'This field cannot be blank', required = True)
 parser.add_argument('value', help = 'This field cannot be blank', required = True)
-parser.add_argument('valueUSD', help = 'This field cannot be blank', required = True)
 parser.add_argument('lattitude', help = 'This field cannot be blank', required = True)
 parser.add_argument('longitude', help = 'This field cannot be blank', required = True)
 parser.add_argument('address', help = 'This field cannot be blank', required = True)
 parser.add_argument('categoryID', help = 'This field cannot be blank', required = True)
-parser.add_argument('user_id', help = 'This field cannot be blank', required = True)
+# parser.add_argument('user_id', help = 'This field cannot be blank', required = True)
 
 class AllExpenses(Resource):
     @jwt_refresh_token_required
@@ -79,34 +79,27 @@ class GetExpenseById(Resource):
                 'message':repr(error),
                 'status':1
             }, 500
-
-class RecentExpense(Resource):
-    @jwt_refresh_token_required
-    def get(self,number):
-        try:
-            return Expense.recent_expense(number)
-        except Exception as error:
-            return { 
-                'message': repr(error),
-                'status' : 1
-            }, 500  
+        
 
 class AddExpense(Resource):
-    @jwt_refresh_token_required
+    @jwt_refresh_token_required   
     def post(self):
+        token_email = get_jwt_identity()
+        currentId = Expense.find_id_by_email(token_email)
         data = parser.parse_args()
+        value_usd = '%.2f'%(int(data['value'])/300)
         new_expense = Expense(
             title = data['title'],
             private = data['private'],
             currency = data['currency'],
             value = data['value'],
-            valueUSD = data['valueUSD'],
+            valueUSD = value_usd,
             lattitude = data['lattitude'],
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
             date = d.strftime('%Y-%m-%d %H:%M:%S'),
-            user_id = data['user_id']
+            user_id = currentId
         )
 
         try:
