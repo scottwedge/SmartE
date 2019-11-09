@@ -24,10 +24,18 @@ class Expense(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+        db.session.close()
 
-    
     @classmethod
-    def return_all(cls):
+    def update_to_db(cls,newexpense):
+        db.session.bulk_update_mappings(Expense, newexpense)
+        db.session.commit()
+        db.session.close()
+
+
+    @classmethod
+    def return_all(cls,current_id):
+
         def to_json(x):                 
             try:
                 return{
@@ -46,7 +54,7 @@ class Expense(db.Model):
                 }
             except:
                 return{'message':'I cannot get this message'}
-        return {'expenses': list(map(lambda x: to_json(x), Expense.query.all()))}
+        return {'expenses': list(map(lambda x: to_json(x), Expense.query.filter(Expense.user_id == current_id).all()))}
 
 
     @classmethod
@@ -69,6 +77,70 @@ class Expense(db.Model):
         except:
             return{'message':'I cannot get this message'}
 
+
+    @classmethod
+    def recent_expense(cls,num,id):
+        
+        # currentId = db.session.query(User).filter(User.email == token_email).first().id
+        expense = db.session.query(Expense).filter(Expense.user_id == id).limit(num)
+        allImageUrl = [
+            {
+            "id":1,
+            "url":"https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg"
+            },
+             {
+            "id":2,
+            "url":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg"
+            }, 
+            {
+            "id":3,
+            "url":"http://www.xwlxw.com/uploads/allimg/150928/7-15092Q15159544.png"
+            }, 
+            {
+            "id":4,
+            "url":"https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg"
+            }, 
+            {
+            "id":5,
+            "url":"hhttps://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg"
+            },
+             {
+            "id":6,
+            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg"
+            }, 
+            {
+            "id":7,
+            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
+            } ]
+        def to_json(x):                 
+            try:
+                return{
+                    'title':x.title,
+                    'private':x.private,
+                    'currency':x.currency,
+                    'value':x.value,
+                    'valueUSD':x.valueUSD,
+                    'lattitude':x.lattitude,
+                    'longitude':x.longitude,
+                    'address':x.address,
+                    'categoryID':x.categoryID,
+                    'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
+                    'user_id':x.user_id
+
+                }
+            except:
+                return{
+                    'message':'I cannot get recent_expense message',
+                    'status':1
+                }
+        return {
+            'expenses': list(map(lambda x: to_json(x), expense)),
+            'images':allImageUrl
+        }
+
+
+
+
     @classmethod
     def find_id_by_email(cls,email):    
         current_user = db.session.query(User).filter(User.email == email).first()
@@ -76,6 +148,10 @@ class Expense(db.Model):
         print(current_id)
         return current_id
 
-        
+    @classmethod
+    def delete_by_id(cls,id):
+        delete_expense = db.session.query(Expense).filter(Expense.id == id).first() 
+        db.session.delete(delete_expense)
+        db.session.commit()           
 
 
