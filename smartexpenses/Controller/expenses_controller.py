@@ -17,13 +17,16 @@ parser.add_argument('lattitude', help = 'This field cannot be blank', required =
 parser.add_argument('longitude', help = 'This field cannot be blank', required = True)
 parser.add_argument('address', help = 'This field cannot be blank', required = True)
 parser.add_argument('categoryID', help = 'This field cannot be blank', required = True)
-# parser.add_argument('user_id', help = 'This field cannot be blank', required = True)
 
 class AllExpenses(Resource):
     @jwt_refresh_token_required
+    
     def get(self):
+        # get curentId
+        token_email = get_jwt_identity()
+        currentId = Expense.find_id_by_email(token_email)
         try:
-            return Expense.return_all()
+            return Expense.return_all(currentId)
         except Exception as error:
             return { 
                 'message': repr(error),
@@ -34,40 +37,6 @@ class AllExpenses(Resource):
     def delete(self):
         return {'message': 'Delete all expenses'}
     
-class ReturnImages(Resource):
-    @jwt_refresh_token_required
-    def get(self):
-        allImageUrl = [
-            {
-            "id":1,
-            "url":"https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg"
-            },
-             {
-            "id":2,
-            "url":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg"
-            }, 
-            {
-            "id":3,
-            "url":"http://www.xwlxw.com/uploads/allimg/150928/7-15092Q15159544.png"
-            }, 
-            {
-            "id":4,
-            "url":"https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg"
-            }, 
-            {
-            "id":5,
-            "url":"hhttps://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg"
-            },
-             {
-            "id":6,
-            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg"
-            }, 
-            {
-            "id":7,
-            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
-            }
-        ] 
-        return allImageUrl
 
 class GetExpenseById(Resource):
     @jwt_refresh_token_required
@@ -80,6 +49,19 @@ class GetExpenseById(Resource):
                 'status':1
             }, 500
         
+class GetRecentExpense(Resource):
+    @jwt_refresh_token_required   
+    def get(self,number):
+        token_email = get_jwt_identity()
+        currentId = Expense.find_id_by_email(token_email)
+        try:
+            return Expense.recent_expense(number,currentId)
+        except Exception as error:
+            return{
+                'message':repr(error),
+                'status':1
+            },500
+
 
 class AddExpense(Resource):
     @jwt_refresh_token_required   
@@ -114,4 +96,55 @@ class AddExpense(Resource):
                 'status' : 1
             }, 500
     
-    
+
+class UpdateExpenseById(Resource):
+   @jwt_refresh_token_required
+   def put(self,id):
+        update_expense = Expense.find_by_id(id)
+        print(update_expense)
+        token_email = get_jwt_identity()
+        currentId = Expense.find_id_by_email(token_email)
+        data = parser.parse_args()
+        value_usd = '%.2f'%(int(data['value'])/300)
+        new_expense=[{
+            'id':id,
+            'title':data['title'],
+            'private':data['private'],
+            'currency': data['currency'],
+            'value':data['value'],
+            'valueUSD':value_usd,
+            'lattitude':data['lattitude'],
+            'longitude':data['longitude'],
+            'address':data['address'],
+            'categoryID':data['categoryID'],
+            'date':d.strftime('%Y-%m-%d %H:%M:%S'),
+            'user_id':currentId
+        }]   
+        try:
+            Expense.update_to_db(new_expense)           
+            return { 
+                'message':'Your expense {} was updated'.format(data['title']),
+                'status' : 0
+            }, 200
+        except Exception as error:
+            return { 
+                'message': repr(error),
+                'status' : 1
+            }, 500
+
+
+class DeleteExpenseById(Resource):
+    @jwt_refresh_token_required   
+    def delete(self,id):
+        try:
+            Expense.delete_by_id(id)
+            return{
+                'message':'success delete expense',
+                'status':0
+            },200
+        except Exception as error:
+            return {
+                'message':repr(error),
+                'status':1
+            }, 500
+        
