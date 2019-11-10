@@ -11,7 +11,7 @@ class Expense(db.Model):
     currency = db.Column(db.String(3), nullable=False)
     value = db.Column(db.Float, nullable=False)
     valueUSD = db.Column(db.Float, nullable=False)
-    lattitude = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(100), nullable=False)
     categoryID = db.Column(db.Integer, nullable=False)
@@ -44,7 +44,7 @@ class Expense(db.Model):
                     'currency':x.currency,
                     'value':x.value,
                     'valueUSD':x.valueUSD,
-                    'lattitude':x.lattitude,
+                    'latitude':x.latitude,
                     'longitude':x.longitude,
                     'address':x.address,
                     'categoryID':x.categoryID,
@@ -67,7 +67,7 @@ class Expense(db.Model):
                 'currency':expense.currency,
                 'value':expense.value,
                 'valueUSD':expense.valueUSD,
-                'lattitude':expense.lattitude,
+                'latitude':expense.latitude,
                 'longitude':expense.longitude,
                 'address':expense.address,
                 'categoryID':expense.categoryID,
@@ -120,7 +120,7 @@ class Expense(db.Model):
                     'currency':x.currency,
                     'value':x.value,
                     'valueUSD':x.valueUSD,
-                    'lattitude':x.lattitude,
+                    'latitude':x.latitude,
                     'longitude':x.longitude,
                     'address':x.address,
                     'categoryID':x.categoryID,
