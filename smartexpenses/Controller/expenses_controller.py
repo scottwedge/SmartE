@@ -13,7 +13,7 @@ parser.add_argument('title', help = 'This field cannot be blank', required = Tru
 parser.add_argument('private', help = 'This field cannot be blank', type=inputs.boolean, required = True)
 parser.add_argument('currency', help = 'This field cannot be blank', required = True)
 parser.add_argument('value', help = 'This field cannot be blank', required = True)
-parser.add_argument('lattitude', help = 'This field cannot be blank', required = True)
+parser.add_argument('latitude', help = 'This field cannot be blank', required = True)
 parser.add_argument('longitude', help = 'This field cannot be blank', required = True)
 parser.add_argument('address', help = 'This field cannot be blank', required = True)
 parser.add_argument('categoryID', help = 'This field cannot be blank', required = True)
@@ -76,7 +76,7 @@ class AddExpense(Resource):
             currency = data['currency'],
             value = data['value'],
             valueUSD = value_usd,
-            lattitude = data['lattitude'],
+            latitude = data['latitude'],
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
@@ -113,7 +113,7 @@ class UpdateExpenseById(Resource):
             'currency': data['currency'],
             'value':data['value'],
             'valueUSD':value_usd,
-            'lattitude':data['lattitude'],
+            'latitude':data['latitude'],
             'longitude':data['longitude'],
             'address':data['address'],
             'categoryID':data['categoryID'],
