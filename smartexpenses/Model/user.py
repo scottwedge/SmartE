@@ -21,6 +21,10 @@ class User(db.Model):
         return cls.query.filter_by(email=email).first()
 
     @classmethod
+    def find_id_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
     def return_all(cls):
         def to_json(x):
             return {
@@ -35,9 +39,15 @@ class User(db.Model):
         try:
             num_rows_deleted = db.session.query(cls).delete()
             db.session.commit()
-            return {'message': '{} row(s) deleted'.format(num_rows_deleted)}
-        except:
-            return {'message': 'Something went wrong'}
+            return {
+                'message' : '{} row(s) deleted'.format(num_rows_deleted),
+                'status' : 0
+            }
+        except Exception as error:
+            return {
+                'message': repr(error),
+                'status' : 1
+            }
 
     @staticmethod
     def generate_hash(password):

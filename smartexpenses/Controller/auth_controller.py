@@ -32,7 +32,7 @@ class UserRegistration(Resource):
                 'message': 'User {} was created'.format(data['email']),
                 'refresh_token': refresh_token,
                 'status' : 0
-                }
+                }, 200
         except Exception as error:
             return {
                 'message': repr(error),
@@ -56,7 +56,7 @@ class UserLogin(Resource):
                 'message': 'Logged in as {}'.format(current_user.email),
                 'refresh_token': refresh_token,
                 'status' : 0
-            }
+            }, 200
         else:
             return {
                 'message': 'Wrong credentials',
@@ -73,7 +73,7 @@ class UserLogoutRefresh(Resource):
             return {
                 'message': 'Successful logout.',
                 'status' : 0
-            }
+            }, 200
         except Exception as error:
             return {
                 'message': repr(error),

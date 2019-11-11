@@ -1,12 +1,13 @@
 from flask_restful import Resource, reqparse, inputs
 from binascii import hexlify
 from flask_jwt_extended import jwt_refresh_token_required,get_jwt_identity
-import jwt
 from smartexpenses.Model.expense import Expense
+from smartexpenses.Model.user import User
+
 import datetime
 
 tzx = datetime.timezone(datetime.timedelta(hours=1))
-d = datetime.datetime.now(tz=tzx)
+date = datetime.datetime.now(tz=tzx)
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', help = 'This field cannot be blank', required = True)
@@ -20,13 +21,11 @@ parser.add_argument('categoryID', help = 'This field cannot be blank', required 
 
 class AllExpenses(Resource):
     @jwt_refresh_token_required
-    
     def get(self):
-        # get curentId
         token_email = get_jwt_identity()
-        currentId = Expense.find_id_by_email(token_email)
+        user_id = User.find_by_email(token_email)
         try:
-            return Expense.return_all(currentId)
+            return Expense.return_all_by_id(user_id)
         except Exception as error:
             return { 
                 'message': repr(error),
@@ -38,24 +37,26 @@ class AllExpenses(Resource):
         return {'message': 'Delete all expenses'}
     
 
-class GetExpenseById(Resource):
+class GetExpense(Resource):
     @jwt_refresh_token_required
-    def get(self,id):
+    def get(self, id):
+        token_email = get_jwt_identity()
+        user_id = User.find_by_email(token_email)
         try:
-            return Expense.find_by_id(id)
+            return Expense.find_by_id(user_id)
         except Exception as error:
             return {
                 'message':repr(error),
                 'status':1
             }, 500
         
-class GetRecentExpense(Resource):
+class GetRecentExpenses(Resource):
     @jwt_refresh_token_required   
-    def get(self,number):
+    def get(self, number):
         token_email = get_jwt_identity()
-        currentId = Expense.find_id_by_email(token_email)
+        user_id = User.find_by_email(token_email)
         try:
-            return Expense.recent_expense(number,currentId)
+            return Expense.find_recents_by_id(number, user_id)
         except Exception as error:
             return{
                 'message':repr(error),
@@ -67,9 +68,10 @@ class AddExpense(Resource):
     @jwt_refresh_token_required   
     def post(self):
         token_email = get_jwt_identity()
-        currentId = Expense.find_id_by_email(token_email)
+        user_id = User.find_by_email(token_email)
         data = parser.parse_args()
         value_usd = '%.2f'%(int(data['value'])/300)
+
         new_expense = Expense(
             title = data['title'],
             private = data['private'],
@@ -80,8 +82,8 @@ class AddExpense(Resource):
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
-            date = d.strftime('%Y-%m-%d %H:%M:%S'),
-            user_id = currentId
+            date = date.strftime('%Y-%m-%date %H:%M:%S'),
+            user_id = user_id
         )
 
         try:
@@ -97,31 +99,29 @@ class AddExpense(Resource):
             }, 500
     
 
-class UpdateExpenseById(Resource):
+class UpdateExpense(Resource):
    @jwt_refresh_token_required
-   def put(self,id):
-        update_expense = Expense.find_by_id(id)
-        print(update_expense)
+   def put(self, id):
         token_email = get_jwt_identity()
-        currentId = Expense.find_id_by_email(token_email)
+        user_id = User.find_by_email(token_email)
+        expense = Expense.find_by_user_id(user_id)
         data = parser.parse_args()
         value_usd = '%.2f'%(int(data['value'])/300)
-        new_expense=[{
-            'id':id,
-            'title':data['title'],
-            'private':data['private'],
-            'currency': data['currency'],
-            'value':data['value'],
-            'valueUSD':value_usd,
-            'latitude':data['latitude'],
-            'longitude':data['longitude'],
-            'address':data['address'],
-            'categoryID':data['categoryID'],
-            'date':d.strftime('%Y-%m-%d %H:%M:%S'),
-            'user_id':currentId
-        }]   
+
+        expense.title = data['title']
+        expense.private = data['private']
+        expense.currency = data['currency']
+        expense.value = data['value']
+        expense.valueUSD = value_usd
+        expense.latitude = data['latitude']
+        expense.longitude = data['longitude']
+        expense.address = data['address']
+        expense.categoryID = data['categoryID']
+        expense.date = date.strftime('%Y-%m-%date %H:%M:%S')
+        expense.user_id = user_id
+
         try:
-            Expense.update_to_db(new_expense)           
+            Expense.update_to_db()           
             return { 
                 'message':'Your expense {} was updated'.format(data['title']),
                 'status' : 0
@@ -133,15 +133,17 @@ class UpdateExpenseById(Resource):
             }, 500
 
 
-class DeleteExpenseById(Resource):
+class DeleteExpense(Resource):
     @jwt_refresh_token_required   
-    def delete(self,id):
+    def delete(self, id):
+        token_email = get_jwt_identity()
+        user_id = User.find_by_email(token_email)
         try:
-            Expense.delete_by_id(id)
+            Expense.delete_by_user_id(user_id)
             return{
                 'message':'success delete expense',
                 'status':0
-            },200
+            }, 200
         except Exception as error:
             return {
                 'message':repr(error),

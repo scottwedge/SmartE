@@ -18,116 +18,117 @@ class Expense(db.Model):
     date = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False,)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    def __iter__(self):
-        return self
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
         db.session.close()
 
     @classmethod
-    def update_to_db(cls,newexpense):
-        db.session.bulk_update_mappings(Expense, newexpense)
+    def update_to_db(self):
         db.session.commit()
         db.session.close()
 
     @classmethod
-    def return_all(cls,current_id):
+    def return_all_by_id(cls, user_id):
         def to_json(x):                 
             return {
-                'title':x.title,
-                'private':x.private,
-                'currency':x.currency,
-                'value':x.value,
-                'valueUSD':x.valueUSD,
-                'lattitude':x.lattitude,
-                'longitude':x.longitude,
-                'address':x.address,
-                'categoryID':x.categoryID,
-                'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
-                'user_id':x.user_id
+                'title' : x.title,
+                'private' : x.private,
+                'currency' : x.currency,
+                'value' : x.value,
+                'valueUSD' : x.valueUSD,
+                'latitude' : x.latitude,
+                'longitude' : x.longitude,
+                'address' : x.address,
+                'categoryID' : x.categoryID,
+                'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
-        return {'expenses': list(map(lambda x: to_json(x), Expense.query.all()))}
+        return {'expenses': list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))}
 
     @classmethod
-    def find_by_id(cls, id):
-        expense = db.session.query(Expense).filter(Expense.id == id).first()
+    def find_by_user_id(cls, user_id):
+        expense = cls.query.filter_by(user_id = user_id).first()
         return {
-            'title':expense.title,
-            'private':expense.private,
-            'currency':expense.currency,
-            'value':expense.value,
-            'valueUSD':expense.valueUSD,
-            'lattitude':expense.lattitude,
-            'longitude':expense.longitude,
-            'address':expense.address,
-            'categoryID':expense.categoryID,
-            'date':expense.date.strftime('%Y-%m-%d %H:%M:%S'),
-            'user_id':expense.user_id
+            'title' : expense.title,
+            'private' : expense.private,
+            'currency' : expense.currency,
+            'value' : expense.value,
+            'valueUSD' : expense.valueUSD,
+            'latitude' : expense.latitude,
+            'longitude' : expense.longitude,
+            'address' : expense.address,
+            'categoryID' : expense.categoryID,
+            'date' : expense.date.strftime('%Y-%m-%d %H:%M:%S')
         }
 
     @classmethod
-    def recent_expense(cls, num, id):
-        # currentId = db.session.query(User).filter(User.email == token_email).first().id
-        expense = db.session.query(Expense).filter(Expense.user_id == id).limit(num)
+    def find_recents_by_id(cls, num, user_id):
+        expenses = cls.query().filter_by(user_id=user_id).limit(num)
         allImageUrl = [
             {
-            "id":1,
-            "url":"https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg"
+                "id" : 1,
+                "url" : "https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg"
+            },
+            {
+                "id" : 2,
+                "url":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg"
+            }, 
+            {
+                "id" : 3,
+                "url" : "http://www.xwlxw.com/uploads/allimg/150928/7-15092Q15159544.png"
+            }, 
+            {
+                "id" : 4,
+                "url" : "https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg"
+            }, 
+            {
+                "id" : 5,
+                "url" : "hhttps://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg"
             },
              {
-            "id":2,
-            "url":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg"
+                "id" : 6,
+                "url" : "https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg"
             }, 
             {
-            "id":3,
-            "url":"http://www.xwlxw.com/uploads/allimg/150928/7-15092Q15159544.png"
-            }, 
-            {
-            "id":4,
-            "url":"https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg"
-            }, 
-            {
-            "id":5,
-            "url":"hhttps://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg"
-            },
-             {
-            "id":6,
-            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg"
-            }, 
-            {
-            "id":7,
-            "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
-            } ]
+                "id" : 7,
+                "url" : "https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
+            } 
+        ]
         def to_json(x):                 
             return{
-                'title':x.title,
-                'private':x.private,
-                'currency':x.currency,
-                'value':x.value,
-                'valueUSD':x.valueUSD,
-                'lattitude':x.lattitude,
-                'longitude':x.longitude,
-                'address':x.address,
-                'categoryID':x.categoryID,
-                'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
-                'user_id':x.user_id
-
+                'title' : x.title,
+                'private' : x.private,
+                'currency' : x.currency,
+                'value' : x.value,
+                'valueUSD' : x.valueUSD,
+                'latitude' : x.latitude,
+                'longitude' : x.longitude,
+                'address' : x.address,
+                'categoryID' : x.categoryID,
+                'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
         return {
-            'expenses': list(map(lambda x: to_json(x), expense)),
+            'expenses': list(map(lambda x: to_json(x), expenses)),
             'images' :  allImageUrl
         }
 
     @classmethod
-    def find_id_by_email(cls,email):    
-        current_user = db.session.query(User).filter(User.email == email).first()
-        current_id = current_user.id
-        return current_id
+    def delete_by_user_id(cls, user_id):
+        cls.query().filter_by(user_id=user_id).first().delete()
+        db.session.commit()
 
     @classmethod
-    def delete_by_id(cls,id):
-        delete_expense = db.session.query(Expense).filter(Expense.id == id).first() 
-        db.session.delete(delete_expense)
-        db.session.commit()
+    def delete_all(cls):
+        try:
+            num_rows_deleted = cls.query().delete()
+            db.session.commit()
+            return {
+                'message': '{} row(s) deleted'.format(num_rows_deleted),
+                'status' : 0
+            }
+        except Exception as error:
+            return {
+                'message': repr(error),
+                'status' : 1
+            }
+            
