@@ -11,7 +11,7 @@ class Expense(db.Model):
     currency = db.Column(db.String(3), nullable=False)
     value = db.Column(db.Float, nullable=False)
     valueUSD = db.Column(db.Float, nullable=False)
-    lattitude = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(100), nullable=False)
     categoryID = db.Column(db.Integer, nullable=False)
@@ -35,6 +35,7 @@ class Expense(db.Model):
     @classmethod
     def return_all(cls,current_id):
         def to_json(x):                 
+<<<<<<< HEAD
             return {
                 'title':x.title,
                 'private':x.private,
@@ -49,11 +50,32 @@ class Expense(db.Model):
                 'user_id':x.user_id
             }
         return {'expenses': list(map(lambda x: to_json(x), Expense.query..all()))}
+=======
+            try:
+                return{
+                    'title':x.title,
+                    'private':x.private,
+                    'currency':x.currency,
+                    'value':x.value,
+                    'valueUSD':x.valueUSD,
+                    'latitude':x.latitude,
+                    'longitude':x.longitude,
+                    'address':x.address,
+                    'categoryID':x.categoryID,
+                    'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
+                    'user_id':x.user_id
+
+                }
+            except:
+                return{'message':'I cannot get this message'}
+        return {'expenses': list(map(lambda x: to_json(x), Expense.query.filter(Expense.user_id == current_id).all()))}
+>>>>>>> f2f110cafe3a51998c55a91064f3192ea5792db8
 
 
     @classmethod
     def find_by_id(cls, id):
         expense = db.session.query(Expense).filter(Expense.id == id).first()
+<<<<<<< HEAD
         return {
             'title':expense.title,
             'private':expense.private,
@@ -67,6 +89,25 @@ class Expense(db.Model):
             'date':expense.date.strftime('%Y-%m-%d %H:%M:%S'),
             'user_id':expense.user_id
         }
+=======
+        try:
+            return{
+                'title':expense.title,
+                'private':expense.private,
+                'currency':expense.currency,
+                'value':expense.value,
+                'valueUSD':expense.valueUSD,
+                'latitude':expense.latitude,
+                'longitude':expense.longitude,
+                'address':expense.address,
+                'categoryID':expense.categoryID,
+                'date':expense.date.strftime('%Y-%m-%d %H:%M:%S'),
+                'user_id':expense.user_id
+            }
+        except:
+            return{'message':'I cannot get this message'}
+
+>>>>>>> f2f110cafe3a51998c55a91064f3192ea5792db8
 
     @classmethod
     def recent_expense(cls, num, id):
@@ -102,6 +143,7 @@ class Expense(db.Model):
             "url":"https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
             } ]
         def to_json(x):                 
+<<<<<<< HEAD
             return{
                 'title':x.title,
                 'private':x.private,
@@ -114,6 +156,21 @@ class Expense(db.Model):
                 'categoryID':x.categoryID,
                 'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_id':x.user_id
+=======
+            try:
+                return{
+                    'title':x.title,
+                    'private':x.private,
+                    'currency':x.currency,
+                    'value':x.value,
+                    'valueUSD':x.valueUSD,
+                    'latitude':x.latitude,
+                    'longitude':x.longitude,
+                    'address':x.address,
+                    'categoryID':x.categoryID,
+                    'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
+                    'user_id':x.user_id
+>>>>>>> f2f110cafe3a51998c55a91064f3192ea5792db8
 
             }
         return {
