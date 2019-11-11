@@ -130,6 +130,4 @@ class Expense(db.Model):
     def delete_by_id(cls,id):
         delete_expense = db.session.query(Expense).filter(Expense.id == id).first() 
         db.session.delete(delete_expense)
-        db.session.commit()           
-
-
+        db.session.commit()
