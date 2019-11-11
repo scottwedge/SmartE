@@ -11,7 +11,7 @@ class Expense(db.Model):
     currency = db.Column(db.String(3), nullable=False)
     value = db.Column(db.Float, nullable=False)
     valueUSD = db.Column(db.Float, nullable=False)
-    lattitude = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(100), nullable=False)
     categoryID = db.Column(db.Integer, nullable=False)
@@ -48,8 +48,7 @@ class Expense(db.Model):
                 'date':x.date.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_id':x.user_id
             }
-        return {'expenses': list(map(lambda x: to_json(x), Expense.query..all()))}
-
+        return {'expenses': list(map(lambda x: to_json(x), Expense.query.all()))}
 
     @classmethod
     def find_by_id(cls, id):
