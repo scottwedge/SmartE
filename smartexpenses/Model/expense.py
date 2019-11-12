@@ -44,8 +44,7 @@ class Expense(db.Model):
                 'categoryID' : x.categoryID,
                 'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
-        return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all())),
-
+        return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
 
     @classmethod
     def find_by_userid_and_expenseid(cls, user_id, expense_id):
