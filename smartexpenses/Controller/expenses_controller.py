@@ -39,7 +39,6 @@ class AllExpenses(Resource):
     def delete(self):
         return {'message': 'Delete all expenses'}
     
-
 class GetExpense(Resource):
     @jwt_refresh_token_required
     def get(self, expense_id):
