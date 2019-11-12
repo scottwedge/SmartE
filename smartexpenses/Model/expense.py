@@ -32,6 +32,7 @@ class Expense(db.Model):
     def return_all_by_user_id(cls, user_id):
         def to_json(x):                 
             return {
+                'id' : x.id,
                 'title' : x.title,
                 'private' : x.private,
                 'currency' : x.currency,
@@ -52,6 +53,7 @@ class Expense(db.Model):
         expense = cls.query.filter_by(user_id = user_id, id=expense_id).first()
         if expense:
             return {
+                'id' : expense.id,
                 'title' : expense.title,
                 'private' : expense.private,
                 'currency' : expense.currency,
@@ -102,6 +104,7 @@ class Expense(db.Model):
 
         def to_json(x):                 
             return{
+                'id' : x.id,
                 'title' : x.title,
                 'private' : x.private,
                 'currency' : x.currency,
