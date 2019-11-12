@@ -43,7 +43,7 @@ class GetExpense(Resource):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email)
         try:
-            return Expense.find_by_id(user_id)
+            return Expense.find_by_user_id(user_id)
         except Exception as error:
             return {
                 'message':repr(error),
