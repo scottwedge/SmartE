@@ -25,8 +25,17 @@ class User(db.Model):
                 'password': x.password,
                 'admin' : bool(x.admin)
             }
-        return {'users': list(map(lambda x: to_json(x), User.query.all()))}
-
+        try:
+            return {
+            'users': list(map(lambda x: to_json(x), User.query.all())),
+            'status' : 0 
+            }
+        except Exception as error:
+            return {
+                'message': repr(error),
+                'status' : 1
+            }
+        
     @classmethod
     def delete_all(cls):
         try:

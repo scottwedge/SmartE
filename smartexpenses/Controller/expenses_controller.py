@@ -25,7 +25,10 @@ class AllExpenses(Resource):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email).id
         try:
-            return Expense.return_all_by_id(user_id)
+            return {
+                'expenses' : Expense.return_all_by_user_id(user_id),
+                'status' : 0
+            }
         except Exception as error:
             return { 
                 'message': repr(error),
@@ -39,36 +42,42 @@ class AllExpenses(Resource):
 
 class GetExpense(Resource):
     @jwt_refresh_token_required
-    def get(self, id):
+    def get(self, expense_id):
         token_email = get_jwt_identity()
-        user_id = User.find_by_email(token_email)
+        user_id = User.find_by_email(token_email).id
         try:
-            return Expense.find_by_id(user_id)
+            return {
+                'expanse' : Expense.find_by_userid_and_expenseid(user_id, expense_id),
+                'status' : 0
+            }
         except Exception as error:
             return {
-                'message':repr(error),
-                'status':1
+                'message': repr(error),
+                'status' : 1
             }, 500
         
 class GetRecentExpenses(Resource):
     @jwt_refresh_token_required   
     def get(self, number):
         token_email = get_jwt_identity()
-        user_id = User.find_by_email(token_email)
+        user_id = User.find_by_email(token_email).id
         try:
-            return Expense.find_recents_by_id(number, user_id)
+            return {
+                'expenses' : Expense.find_recents_by_user_id(number, user_id),
+                'status' : 0
+            }
         except Exception as error:
             return{
-                'message':repr(error),
-                'status':1
-            },500
+                'message' : repr(error),
+                'status': 1
+            }, 500
 
 
 class AddExpense(Resource):
     @jwt_refresh_token_required   
     def post(self):
         token_email = get_jwt_identity()
-        user_id = User.find_by_email(token_email)
+        user_id = User.find_by_email(token_email).id
         data = parser.parse_args()
         value_usd = '%.2f'%(int(data['value'])/300)
 
@@ -103,7 +112,7 @@ class UpdateExpense(Resource):
    @jwt_refresh_token_required
    def put(self, id):
         token_email = get_jwt_identity()
-        user_id = User.find_by_email(token_email)
+        user_id = User.find_by_email(token_email).id
         expense = Expense.find_by_user_id(user_id)
         data = parser.parse_args()
         value_usd = '%.2f'%(int(data['value'])/300)
@@ -137,7 +146,7 @@ class DeleteExpense(Resource):
     @jwt_refresh_token_required   
     def delete(self, id):
         token_email = get_jwt_identity()
-        user_id = User.find_by_email(token_email)
+        user_id = User.find_by_email(token_email).id
         try:
             Expense.delete_by_user_id(user_id)
             return{
