@@ -23,7 +23,7 @@ class AllExpenses(Resource):
     @jwt_refresh_token_required
     def get(self):
         token_email = get_jwt_identity()
-        user_id = User.find_by_email(token_email)
+        user_id = User.find_by_email(token_email).id
         try:
             return Expense.return_all_by_id(user_id)
         except Exception as error:

@@ -9,19 +9,12 @@ class User(db.Model):
     admin = db.Column(db.Boolean, nullable=False)
     expenses = db.relationship('Expense', backref='user', lazy=True)
 
-    def __repr__(self):
-        return "<User(email={self.email})>".format(self=self)
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def find_by_email(cls, email):
-        return cls.query.filter_by(email=email).first()
-
-    @classmethod
-    def find_id_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
     @classmethod
