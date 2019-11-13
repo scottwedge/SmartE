@@ -23,6 +23,13 @@ class Expense(db.Model):
         db.session.commit()
         db.session.close()
 
+    def refresh_record_in_db(self):
+        db.session.add(self)
+        db.session.commit()
+        db.session.flush()
+        db.session.refresh(self)
+        db.session.close()
+
     @classmethod
     def update_to_db(self):
         db.session.commit()

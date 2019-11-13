@@ -90,13 +90,14 @@ class AddExpense(Resource):
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
-            date = date.strftime('%Y-%m-%date %H:%M:%S'),
+            date = date.strftime('%Y-%m-%d %H:%M:%S'),
             user_id = user_id
         )
-
         try:
-            new_expense.save_to_db()           
+            new_expense.refresh_record_in_db()
+            print(new_expense.id)          
             return { 
+                'expense' : Expense.find_by_userid_and_expenseid(user_id, new_expense.id),
                 'message':'Your expense {} was created'.format(data['title']),
                 'status' : 0
             }, 200
@@ -125,7 +126,7 @@ class UpdateExpense(Resource):
         expense.longitude = data['longitude']
         expense.address = data['address']
         expense.categoryID = data['categoryID']
-        expense.date = date.strftime('%Y-%m-%date %H:%M:%S')
+        expense.date = date.strftime('%Y-%m-%d %H:%M:%S')
         expense.user_id = user_id
 
         try:
