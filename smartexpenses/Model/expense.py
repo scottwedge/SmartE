@@ -30,6 +30,13 @@ class Expense(db.Model):
         db.session.refresh(self)
         db.session.close()
 
+        
+    @classmethod
+    def isAdmin(cls, user_id):
+        adminUser = db.session.query(User).filter(User.id == user_id).first()
+        return adminUser.admin 
+        
+
     @classmethod
     def update_to_db(self):
         db.session.commit()
@@ -52,6 +59,24 @@ class Expense(db.Model):
                 'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
         return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
+
+    @classmethod
+    def return_all(cls):
+        def to_json(x):                 
+            return {
+                'id' : x.id,
+                'title' : x.title,
+                'private' : x.private,
+                'currency' : x.currency,
+                'value' : x.value,
+                'valueUSD' : x.valueUSD,
+                'latitude' : x.latitude,
+                'longitude' : x.longitude,
+                'address' : x.address,
+                'categoryID' : x.categoryID,
+                'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        return list(map(lambda x: to_json(x), cls.query.all()))
 
     @classmethod
     def find_by_userid_and_expenseid(cls, user_id, expense_id):

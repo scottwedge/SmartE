@@ -3,7 +3,6 @@ from binascii import hexlify
 from flask_jwt_extended import jwt_refresh_token_required,get_jwt_identity
 from smartexpenses.Model.expense import Expense
 from smartexpenses.Model.user import User
-
 import datetime
 
 tzx = datetime.timezone(datetime.timedelta(hours=1))
@@ -38,7 +37,31 @@ class AllExpenses(Resource):
     @jwt_refresh_token_required
     def delete(self):
         return {'message': 'Delete all expenses'}
-    
+
+
+class AdminAllExpenses(Resource):
+    @jwt_refresh_token_required
+    def get(self):
+        token_email = get_jwt_identity()
+        user_id = User.find_by_email(token_email).id
+        UserIsAdmin = Expense.isAdmin(user_id)
+        print(UserIsAdmin)
+        try:
+            if UserIsAdmin:
+                return {
+                    'expenses' : Expense.return_all(),
+                    'status' : 0
+                }
+            else:
+               return {
+                    'message' : 'sorry, you are not the administrator',
+                    'status' : 1
+                } 
+        except Exception as error:
+            return { 
+                'message': repr(error),
+                'status' : 1
+            }, 500   
 class GetExpense(Resource):
     @jwt_refresh_token_required
     def get(self, expense_id):
