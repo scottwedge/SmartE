@@ -15,8 +15,9 @@ class Expense(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(100), nullable=False)
     categoryID = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False,)
+    date = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+  
 
     def save_to_db(self):
         db.session.add(self)
@@ -58,7 +59,8 @@ class Expense(db.Model):
                 'categoryID' : x.categoryID,
                 'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
-        return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
+        # return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
+        return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).order_by(Expense.date.desc()).all()))
 
     @classmethod
     def return_all(cls):
@@ -76,7 +78,7 @@ class Expense(db.Model):
                 'categoryID' : x.categoryID,
                 'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
-        return list(map(lambda x: to_json(x), cls.query.all()))
+        return list(map(lambda x: to_json(x), cls.query.order_by(Expense.date.desc()).all()))
 
     @classmethod
     def find_by_userid_and_expenseid(cls, user_id, expense_id):
@@ -101,7 +103,8 @@ class Expense(db.Model):
 
     @classmethod
     def find_recents_by_user_id(cls, num, user_id):
-        expenses = cls.query().filter_by(user_id=user_id).limit(num)
+        expenses = cls.query.filter_by(user_id = user_id).order_by(cls.date.desc()).limit(num).all() 
+        # print(expenses)
         allImageUrl = [
             {
                 "id" : 1,
@@ -147,7 +150,11 @@ class Expense(db.Model):
                 'categoryID' : x.categoryID,
                 'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
             }
-            return list(map(lambda x: to_json(x), expenses)), allImageUrl
+        # please clearful the place of return, do not change return 
+        return {
+            'expenses': list(map(lambda x: to_json(x), expenses)),
+            'images':allImageUrl
+        }
 
     @classmethod
     def delete_by_user_id(cls, user_id):
