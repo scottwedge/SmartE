@@ -122,31 +122,39 @@ class Expense(db.Model):
         allImageUrl = [
             {
                 "id" : 1,
-                "url" : "https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg"
+                "imageUrl" : "https://pic2.zhimg.com/v2-1fd63894af1d05828fc4cf987af517b1_1200x500.jpg",
+                "websiteUrl":"https://www.duol.hu/kultura/helyi-kultura/unnep-jozsef-nador-helyezte-el-a-pest-budai-lanchid-alapkovet-2987674/"
             },
             {
                 "id" : 2,
-                "url":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg"
+                "imageUrl":"https://www.obonparis.com/uploads/BORZE%20RESTAURANT/MIS03809.jpg",
+                "websiteUrl":"https://fuszereslelek.nlcafe.hu/2008/04/30/gulyas_6/"
             }, 
             {
                 "id" : 3,
-                "url" : "http://www.xwlxw.com/uploads/allimg/150928/7-15092Q15159544.png"
+                "imageUrl" : "https://www.nationalgeographic.com/content/dam/travel/Guide-Pages/europe/budapest-travel.adapt.1900.1.jpg",
+                "websiteUrl":"https://24.hu/fn/gazdasag/2016/02/05/igy-epult-fel-a-magyar-parlament-epulete-video/"
             }, 
             {
                 "id" : 4,
-                "url" : "https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg"
+                "imageUrl" : "https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0584.jpg",
+                "websiteUrl":"https://www.newyorkcafe.hu/"
+
             }, 
             {
                 "id" : 5,
-                "url" : "hhttps://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg"
+                "imageUrl" : "https://www.obonparis.com/uploads/NEW%20YORK%20CAFE%20BUDAPEST/NEW%20YORK%20CAFE-0555.jpg",
+                "websiteUrl":"https://www.newyorkcafe.hu/"
             },
              {
                 "id" : 6,
-                "url" : "https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg"
+                "imageUrl" : "https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02566.jpg",
+                "websiteUrl":"https://hungarytoday.hu/pedestrians-to-take-over-budapests-liberty-bridge-on-weekends-once-again/"
             }, 
             {
                 "id" : 7,
-                "url" : "https://www.obonparis.com/uploads/BUDAPEST%20BEST%20THINGS/BAC02270.jpg"
+                "imageUrl" : "https://static.femina.hu/husvet/kurtoskalacs_hazilag/kalacs_nagy.jpg",
+                "websiteUrl":"https://femina.hu/husvet/kurtoskalacs_hazilag/"
             } 
         ]
 
