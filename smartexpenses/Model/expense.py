@@ -62,6 +62,20 @@ class Expense(db.Model):
         # return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
         return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).order_by(Expense.date.desc()).all()))
 
+
+    @classmethod
+    def get_expense_location(cls,user_id):
+        def to_json(x):
+            return {
+            'id' : x.id,
+            'title' : x.title,  
+            'latitude' : x.latitude,
+            'longitude' : x.longitude,
+            'categoryID' : x.categoryID
+            }
+        return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
+
+
     @classmethod
     def return_all(cls):
         def to_json(x):                 
@@ -157,10 +171,20 @@ class Expense(db.Model):
         }
 
     @classmethod
-    def delete_by_user_id(cls, user_id):
-        cls.query().filter_by(user_id=user_id).first().delete()
-        db.session.commit()
-
+    def delete_by_user_id(cls, user_id, expense_id):
+        pass
+        delete_expense =  cls.query.filter_by(user_id = user_id, id=expense_id).first() 
+        # the following  statement will report an error. Please do not use this statement
+        # cls.query.filter_by(user_id = user_id, id=expense_id).first().delete()
+        # print(delete_expense)
+        if delete_expense != None:
+            db.session.delete(delete_expense)
+            db.session.commit()   
+            return 'Your expense {} was success delete'.format(expense_id)  
+        else:
+            return 'No expense with id: {}'.format(expense_id)
+            
+        
     @classmethod
     def delete_all(cls):
         try:

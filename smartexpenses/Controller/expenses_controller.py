@@ -69,7 +69,7 @@ class GetExpense(Resource):
         user_id = User.find_by_email(token_email).id
         try:
             return {
-                'expanse' : Expense.find_by_userid_and_expenseid(user_id, expense_id),
+                'expenses' : Expense.find_by_userid_and_expenseid(user_id, expense_id),
                 'status' : 0
             }
         except Exception as error:
@@ -167,18 +167,35 @@ class UpdateExpense(Resource):
 
 class DeleteExpense(Resource):
     @jwt_refresh_token_required   
-    def delete(self, id):
+    def delete(self, expense_id):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email).id
-        try:
-            Expense.delete_by_user_id(user_id)
+        try:           
             return{
-                'message':'success delete expense',
+                'message':Expense.delete_by_user_id(user_id, expense_id),
                 'status':0
-            }, 200
+            },200
         except Exception as error:
             return {
                 'message':repr(error),
                 'status':1
             }, 500
         
+
+class GetExpenseLocation(Resource):
+    @jwt_refresh_token_required
+    def get(self):
+        token_email = get_jwt_identity()
+        user_id = User.find_by_email(token_email).id
+        try:
+            
+            return{
+                'location': Expense.get_expense_location(user_id),
+                'status':0
+            }
+        except Exception as error:
+            return{
+                'message':repr(error),
+                'status':1
+            },500
+
