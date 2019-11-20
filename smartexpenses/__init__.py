@@ -55,6 +55,6 @@ api.add_resource(expenses_controller.GetExpense,        '/expense/<expense_id>')
 api.add_resource(expenses_controller.GetRecentExpenses, '/expense/recent/<number>')
 api.add_resource(expenses_controller.UpdateExpense,     '/expense/update/<expense_id>')
 api.add_resource(expenses_controller.DeleteExpense,     '/expense/delete/<expense_id>')
-api.add_resource(expenses_controller.GetExpenseLocation, '/expense//get-locations')
+api.add_resource(expenses_controller.GetExpenseLocation, '/expense/get-locations')
 
 
