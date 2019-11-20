@@ -38,7 +38,6 @@ class AllExpenses(Resource):
     def delete(self):
         return {'message': 'Delete all expenses'}
 
-
 class AdminAllExpenses(Resource):
     @jwt_refresh_token_required
     def get(self):
@@ -61,7 +60,8 @@ class AdminAllExpenses(Resource):
             return { 
                 'message': repr(error),
                 'status' : 1
-            }, 500   
+            }, 500
+
 class GetExpense(Resource):
     @jwt_refresh_token_required
     def get(self, expense_id):
@@ -93,7 +93,6 @@ class GetRecentExpenses(Resource):
                 'message' : repr(error),
                 'status': 1
             }, 500
-
 
 class AddExpense(Resource):
     @jwt_refresh_token_required   
@@ -130,7 +129,6 @@ class AddExpense(Resource):
                 'status' : 1
             }, 500
     
-
 class UpdateExpense(Resource):
    @jwt_refresh_token_required
    def put(self, id):
@@ -163,7 +161,6 @@ class UpdateExpense(Resource):
                 'message': repr(error),
                 'status' : 1
             }, 500
-
 
 class DeleteExpense(Resource):
     @jwt_refresh_token_required   
