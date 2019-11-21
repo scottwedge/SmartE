@@ -3,6 +3,7 @@ from binascii import hexlify
 from flask_jwt_extended import (create_refresh_token, jwt_refresh_token_required, 
                                 get_jwt_identity, get_raw_jwt)
 from smartexpenses.Model.user import User
+from smartexpenses.Model.profile import Profile
 from smartexpenses.Model import RevokedTokenModel
 
 parser = reqparse.RequestParser()
@@ -26,7 +27,16 @@ class UserRegistration(Resource):
         )
 
         try:
-            new_user.save_to_db()
+            new_user.save_to_db()  
+            new_user_profile = Profile(
+                total_spendings = 0,
+                color = '#00BFFF',
+                notifications = True,
+                num_latest_spendings = 1,
+                profile_image = 'http://5b0988e595225.cdn.sohucs.com/images/20190324/26b14ff8956b4661a456a7e6751ce085.jpeg',
+                user_id = new_user.id
+            ) 
+            new_user_profile.save_to_db()
             refresh_token = create_refresh_token(identity = data['email'])
             return {
                 'message': 'User {} was created'.format(data['email']),

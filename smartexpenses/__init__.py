@@ -40,6 +40,7 @@ def check_if_token_in_blacklist(decrypted_token):
 from smartexpenses.Controller.root import root
 from smartexpenses.Controller import auth_controller
 from smartexpenses.Controller import expenses_controller
+from smartexpenses.Controller import profiles_controller
 
 app.register_blueprint(root)
 api.add_resource(auth_controller.UserRegistration,  '/register')
@@ -47,6 +48,8 @@ api.add_resource(auth_controller.UserLogin,         '/login')
 api.add_resource(auth_controller.UserLogoutRefresh, '/logout')
 api.add_resource(auth_controller.AllUsers,          '/users')
 api.add_resource(auth_controller.SecretResource,    '/secret')
+
+api.add_resource(profiles_controller.GetProfile, '/user/get-profile')
 
 api.add_resource(expenses_controller.AdminAllExpenses,       '/expense/all/admin')
 api.add_resource(expenses_controller.AllExpenses,       '/expense/all')

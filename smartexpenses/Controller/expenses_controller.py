@@ -3,6 +3,7 @@ from binascii import hexlify
 from flask_jwt_extended import jwt_refresh_token_required,get_jwt_identity
 from smartexpenses.Model.expense import Expense
 from smartexpenses.Model.user import User
+from smartexpenses.Model.profile import Profile
 import datetime
 
 tzx = datetime.timezone(datetime.timedelta(hours=1))
@@ -117,7 +118,9 @@ class AddExpense(Resource):
         )
         try:
             new_expense.refresh_record_in_db()
-            print(new_expense.id)          
+            user_ids = new_expense.user_id
+            # add total_spending to profile table
+            Profile.find_by_user_id(user_ids)         
             return { 
                 'expense' : Expense.find_by_userid_and_expenseid(user_id, new_expense.id),
                 'message':'Your expense {} was created'.format(data['title']),
