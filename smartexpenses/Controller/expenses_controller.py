@@ -4,10 +4,12 @@ from flask_jwt_extended import jwt_refresh_token_required,get_jwt_identity
 from smartexpenses.Model.expense import Expense
 from smartexpenses.Model.user import User
 from smartexpenses.Model.profile import Profile
+import time
 import datetime
 
-tzx = datetime.timezone(datetime.timedelta(hours=1))
-date = datetime.datetime.now(tz=tzx)
+# tzx = datetime.timezone(datetime.timedelta(hours=1))
+# date = datetime.datetime.now(tz=tzx)
+# localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', help = 'This field cannot be blank', required = True)
@@ -113,7 +115,7 @@ class AddExpense(Resource):
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
-            date = date.strftime('%Y-%m-%d %H:%M:%S'),
+            date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             user_id = user_id
         )
         try:
@@ -150,7 +152,7 @@ class UpdateExpense(Resource):
         expense.longitude = data['longitude']
         expense.address = data['address']
         expense.categoryID = data['categoryID']
-        expense.date = date.strftime('%Y-%m-%d %H:%M:%S')
+        expense.date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
         expense.user_id = user_id
 
         try:
