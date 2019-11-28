@@ -109,7 +109,7 @@ class AddExpense(Resource):
             longitude = data['longitude'],
             address = data['address'],
             categoryID = data['categoryID'],
-            date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            date = data['date'],
             user_id = user_id
         )
         try:
@@ -145,7 +145,7 @@ class UpdateExpense(Resource):
         expense.longitude = data['longitude']
         expense.address = data['address']
         expense.categoryID = data['categoryID']
-        expense.date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        expense.date = data['date']
         expense.user_id = user_id
 
         try:

@@ -1,6 +1,5 @@
 from smartexpenses import db
 from smartexpenses.Model.user import User
-import datetime
 import json
 
 class Expense(db.Model):
@@ -15,7 +14,7 @@ class Expense(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(100), nullable=False)
     categoryID = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False)
+    date = db.Column(db.Numeric(precision=32, asdecimal=False, decimal_return_scale=None))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
   
 
@@ -57,7 +56,7 @@ class Expense(db.Model):
                 'longitude' : x.longitude,
                 'address' : x.address,
                 'categoryID' : x.categoryID,
-                'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
+                'date' : x.date
             }
         # return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
         return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).order_by(Expense.date.desc()).all()))
@@ -90,7 +89,7 @@ class Expense(db.Model):
                 'longitude' : x.longitude,
                 'address' : x.address,
                 'categoryID' : x.categoryID,
-                'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
+                'date' : x.date
             }
         return list(map(lambda x: to_json(x), cls.query.order_by(Expense.date.desc()).all()))
 
@@ -110,7 +109,7 @@ class Expense(db.Model):
                 'longitude' : expense.longitude,
                 'address' : expense.address,
                 'categoryID' : expense.categoryID,
-                'date' : expense.date.strftime('%Y-%m-%d %H:%M:%S')
+                'date' : expense.date
             }
         else:
             return 'No expense with id: {}'.format(expense_id)
@@ -170,7 +169,7 @@ class Expense(db.Model):
                 'longitude' : x.longitude,
                 'address' : x.address,
                 'categoryID' : x.categoryID,
-                'date' : x.date.strftime('%Y-%m-%d %H:%M:%S')
+                'date' : x.date
             }
         # please clearful the place of return, do not change return 
         return {
