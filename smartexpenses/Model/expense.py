@@ -14,7 +14,7 @@ class Expense(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(100), nullable=False)
     categoryID = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.Numeric(precision=32, asdecimal=False, decimal_return_scale=None))
+    date = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
   
 
