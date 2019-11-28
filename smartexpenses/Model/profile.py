@@ -8,14 +8,14 @@ import json
 
 class Profile(db.Model):
     __tablename__ = 'profiles'
-    id = db.Column(db.Integer, primary_key=True)
-    total_spendings = db.Column(db.Float, nullable=False)
-    color = db.Column(db.String(100),nullable=False)
-    notifications = db.Column(db.Boolean, nullable=False)
-    num_latest_spendings = db.Column(db.Integer, nullable=False)
-    profile_image = db.Column(db.String(200), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, index=True,nullable=False)
-    user = db.relationship('User', backref='profiles', lazy=True)
+    id =                    db.Column(db.Integer, primary_key=True)
+    total_spendings =       db.Column(db.Float, nullable=False)
+    color =                 db.Column(db.String(100),nullable=False)
+    notifications =         db.Column(db.Boolean, nullable=False)
+    num_latest_spendings =  db.Column(db.Integer, nullable=False)
+    profile_image =         db.Column(db.String(200), nullable=False)
+    user_id =               db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, index=True, nullable=False)
+    user =                  db.relationship('User', backref='profiles', lazy=True)
    
     def save_to_db(self):
         db.session.add(self)
@@ -34,7 +34,7 @@ class Profile(db.Model):
         prof.update_to_db()
        
     @classmethod
-    def calL_total_spendings(cls,user_id):
+    def call_total_spendings(cls,user_id):
         values = 0
         al_expense = db.session.query(Expense).filter(Expense.user_id==user_id).all()
         for a in al_expense:
