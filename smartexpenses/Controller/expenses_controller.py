@@ -135,7 +135,8 @@ class UpdateExpense(Resource):
         data = parser.parse_args()
            
         try:
-            Expense.update_by_userid_and_expenseid(user_id,expense_id,data)     
+            Expense.update_by_userid_and_expenseid(user_id,expense_id,data)   
+            Profile.update_total_spendings(user_id)  
             return { 
                 'message':'Your expense {} was updated'.format(data['title']),
                 'status' : 0

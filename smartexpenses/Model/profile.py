@@ -38,7 +38,7 @@ class Profile(db.Model):
         db.session.commit()
         db.session.close()
 
-        
+
     @classmethod
     def update_total_spendings(cls, user_id):
 
@@ -63,7 +63,7 @@ class Profile(db.Model):
             def to_json(x):
                 return{
                     'user_id':x.user_id,
-                    'total_spendings': x.total_spendings,
+                    'total_spendings': Profile.call_total_spendings(user_id),
                     'color':x.color,
                     'notifications':x.notifications,
                     'num_latest_spendings':x.num_latest_spendings,
