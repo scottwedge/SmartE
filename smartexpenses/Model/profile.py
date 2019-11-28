@@ -26,13 +26,15 @@ class Profile(db.Model):
         db.session.commit()
         db.session.close()
         
+    @classmethod
+    def str_to_bool(cls,str):
+        return True if str.lower() == 'true' else False
 
     @classmethod
     def update_profile_by_user_id(cls,user_id,data):
         cur_profile = cls.query.filter_by(user_id=user_id).first()
-
         cur_profile.color= data["color"]
-        cur_profile.notifications = data["notifications"]
+        cur_profile.notifications = cls.str_to_bool(data["notifications"])
         cur_profile.profile_image = data["profile_image"]
         cur_profile.num_latest_spendings = data["num_latest_spendings"]
         db.session.commit()
