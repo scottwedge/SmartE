@@ -12,7 +12,7 @@ parser.add_argument('currency', help = 'This field cannot be blank', required = 
 parser.add_argument('value', help = 'This field cannot be blank', required = True)
 parser.add_argument('latitude')
 parser.add_argument('longitude')
-parser.add_argument('address', help = 'This field cannot be blank', required = True)
+parser.add_argument('address')
 parser.add_argument('categoryID', help = 'This field cannot be blank', required = True)
 
 class AllExpenses(Resource):
