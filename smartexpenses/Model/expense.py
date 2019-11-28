@@ -17,7 +17,6 @@ class Expense(db.Model):
     date =          db.Column(db.Integer, nullable=False)
     user_id =       db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
   
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -30,7 +29,6 @@ class Expense(db.Model):
         db.session.refresh(self)
         db.session.close()
 
-        
     @classmethod
     def isAdmin(cls, user_id):
         adminUser = db.session.query(User).filter(User.id == user_id).first()

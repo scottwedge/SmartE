@@ -27,9 +27,9 @@ class Profile(db.Model):
         db.session.close()
 
     @classmethod
-    def find_by_user_id(cls,user_id):
+    def update_total_spendings(cls, user_id, value):
         profile = cls.query.filter_by(user_id=user_id).scalar()
-        profile.total_spendings = Profile.get_total_spendings(user_id)
+        profile.total_spendings += value
         profile.update_to_db()
        
     @classmethod
@@ -39,7 +39,6 @@ class Profile(db.Model):
         for expense in expenses:
             total_spendings += expense.value
         return total_spendings
-
       
     @classmethod
     def return_profile_by_user_id(cls, user_id):
