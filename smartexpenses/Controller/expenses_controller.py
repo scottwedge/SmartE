@@ -115,7 +115,7 @@ class AddExpense(Resource):
         )
         try:
             new_expense.refresh_record_in_db()
-            Profile.update_total_spendings(user_id, data['value'])         
+            Profile.update_total_spendings(user_id)         
             return { 
                 'expense' : Expense.find_by_userid_and_expenseid(user_id, new_expense.id),
                 'message':'Your expense {} was created'.format(data['title']),
@@ -128,28 +128,14 @@ class AddExpense(Resource):
             }, 500
     
 class UpdateExpense(Resource):
-   @jwt_refresh_token_required
-   def put(self, id):
+    @jwt_refresh_token_required
+    def put(self, expense_id):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email).id
-        expense = Expense.find_by_user_id(user_id)
         data = parser.parse_args()
-        value_usd = '%.2f'%(int(data['value'])/300)
-
-        expense.title = data['title']
-        expense.private = data['private']
-        expense.currency = data['currency']
-        expense.value = data['value']
-        expense.valueUSD = value_usd
-        expense.latitude = data['latitude']
-        expense.longitude = data['longitude']
-        expense.address = data['address']
-        expense.categoryID = data['categoryID']
-        expense.date = data['date']
-        expense.user_id = user_id
-
+           
         try:
-            Expense.update_to_db()           
+            Expense.update_by_userid_and_expenseid(user_id,expense_id,data)     
             return { 
                 'message':'Your expense {} was updated'.format(data['title']),
                 'status' : 0
@@ -159,7 +145,6 @@ class UpdateExpense(Resource):
                 'message': repr(error),
                 'status' : 1
             }, 500
-
 class DeleteExpense(Resource):
     @jwt_refresh_token_required   
     def delete(self, expense_id):

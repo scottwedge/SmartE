@@ -14,11 +14,11 @@ class Expense(db.Model):
     longitude =     db.Column(db.Float, nullable=False)
     address =       db.Column(db.String(100), nullable=False)
     categoryID =    db.Column(db.Integer, nullable=False)
-    date =          db.Column(db.Integer, nullable=False)
+    date =          db.Column(db.Float, nullable=False)
     user_id =       db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
   
     def save_to_db(self):
-        db.session.add(self)
+        db.session.add(self)    
         db.session.commit()
         db.session.close()
 
@@ -111,6 +111,24 @@ class Expense(db.Model):
             }
         else:
             return 'No expense with id: {}'.format(expense_id)
+
+    
+    @classmethod
+    def update_by_userid_and_expenseid(cls, user_id, expense_id, data):
+        value_usd = '%.2f'%(int(data['value'])/300)
+        expense = cls.query.filter_by(user_id = user_id, id=expense_id).first()
+        expense.title = data['title']
+        expense.private = data['private']
+        expense.currency = data['currency']
+        expense.value = data['value']
+        expense.valueUSD = value_usd
+        expense.latitude = data['latitude']
+        expense.longitude = data['longitude']
+        expense.address = data['address']
+        expense.categoryID = data['categoryID']
+        expense.date = data['date']
+        db.session.commit()
+
 
     @classmethod
     def find_recents_by_user_id(cls, num, user_id):

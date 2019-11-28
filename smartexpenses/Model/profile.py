@@ -25,20 +25,36 @@ class Profile(db.Model):
     def update_to_db(self):
         db.session.commit()
         db.session.close()
+        
 
     @classmethod
-    def update_total_spendings(cls, user_id, value):
-        profile = cls.query.filter_by(user_id=user_id).scalar()
-        profile.total_spendings += value
-        profile.update_to_db()
+    def update_profile_by_user_id(cls,user_id,data):
+        cur_profile = cls.query.filter_by(user_id=user_id).first()
+
+        cur_profile.color= data["color"]
+        cur_profile.notifications = data["notifications"]
+        cur_profile.profile_image = data["profile_image"]
+        cur_profile.num_latest_spendings = data["num_latest_spendings"]
+        db.session.commit()
+        db.session.close()
+
+        
+    @classmethod
+    def update_total_spendings(cls, user_id):
+
+        total_spendings = Profile.call_total_spendings(user_id)  
+        prof = cls.query.filter_by(user_id=user_id).scalar()
+        prof.total_spendings = total_spendings
+        prof.update_to_db()
        
     @classmethod
-    def get_total_spendings(cls,user_id):
-        total_spendings = 0
-        expenses = db.session.query(Expense).filter(Expense.user_id==user_id).all()
-        for expense in expenses:
-            total_spendings += expense.value
-        return total_spendings
+    def call_total_spendings(cls,user_id):
+        values = 0
+        al_expense = db.session.query(Expense).filter(Expense.user_id==user_id).all()
+        for a in al_expense:
+            values += a.value
+        print(values)
+        return values
       
     @classmethod
     def return_profile_by_user_id(cls, user_id):
