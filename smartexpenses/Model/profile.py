@@ -28,19 +28,17 @@ class Profile(db.Model):
 
     @classmethod
     def find_by_user_id(cls,user_id):
-        total_spendings = Profile.calL_total_spendings(user_id)  
         prof = cls.query.filter_by(user_id=user_id).scalar()
-        prof.total_spendings = total_spendings
+        prof.total_spendings = Profile.get_total_spendings(user_id)
         prof.update_to_db()
        
     @classmethod
-    def call_total_spendings(cls,user_id):
-        values = 0
-        al_expense = db.session.query(Expense).filter(Expense.user_id==user_id).all()
-        for a in al_expense:
-            values += a.value
-        print(values)
-        return values
+    def get_total_spendings(cls,user_id):
+        total_spendings = 0
+        expenses = db.session.query(Expense).filter(Expense.user_id==user_id).all()
+        for expense in expenses:
+            total_spendings += expense.value
+        return total_spendings
 
       
     @classmethod
