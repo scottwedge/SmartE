@@ -4,20 +4,14 @@ from flask_jwt_extended import jwt_refresh_token_required,get_jwt_identity
 from smartexpenses.Model.expense import Expense
 from smartexpenses.Model.user import User
 from smartexpenses.Model.profile import Profile
-import time
-import datetime
-
-# tzx = datetime.timezone(datetime.timedelta(hours=1))
-# date = datetime.datetime.now(tz=tzx)
-# localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', help = 'This field cannot be blank', required = True)
 parser.add_argument('private', help = 'This field cannot be blank', type=inputs.boolean, required = True)
 parser.add_argument('currency', help = 'This field cannot be blank', required = True)
 parser.add_argument('value', help = 'This field cannot be blank', required = True)
-parser.add_argument('latitude', help = 'This field cannot be blank', required = True)
-parser.add_argument('longitude', help = 'This field cannot be blank', required = True)
+parser.add_argument('latitude')
+parser.add_argument('longitude')
 parser.add_argument('address', help = 'This field cannot be blank', required = True)
 parser.add_argument('categoryID', help = 'This field cannot be blank', required = True)
 
@@ -121,7 +115,6 @@ class AddExpense(Resource):
         try:
             new_expense.refresh_record_in_db()
             user_ids = new_expense.user_id
-            # add total_spending to profile table
             Profile.find_by_user_id(user_ids)         
             return { 
                 'expense' : Expense.find_by_userid_and_expenseid(user_id, new_expense.id),
