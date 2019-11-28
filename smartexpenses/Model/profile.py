@@ -28,9 +28,9 @@ class Profile(db.Model):
 
     @classmethod
     def find_by_user_id(cls,user_id):
-        prof = cls.query.filter_by(user_id=user_id).scalar()
-        prof.total_spendings = Profile.get_total_spendings(user_id)
-        prof.update_to_db()
+        profile = cls.query.filter_by(user_id=user_id).scalar()
+        profile.total_spendings = Profile.get_total_spendings(user_id)
+        profile.update_to_db()
        
     @classmethod
     def get_total_spendings(cls,user_id):
@@ -43,8 +43,8 @@ class Profile(db.Model):
       
     @classmethod
     def return_profile_by_user_id(cls, user_id):
-        prof = cls.query.filter_by(user_id=user_id).all()
-        if prof:
+        profile = cls.query.filter_by(user_id=user_id).all()
+        if profile:
             def to_json(x):
                 return{
                     'user_id':x.user_id,
@@ -56,6 +56,6 @@ class Profile(db.Model):
                     'privacy_url ':'privacy_url ',
                     'terms_and_conditions_url ': 'terms_and_conditions_url '
                 }          
-            return list(map(lambda x: to_json(x), prof))
+            return list(map(lambda x: to_json(x), profile))
         else:
             return 'no such this user profile'
