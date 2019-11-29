@@ -28,13 +28,7 @@ class Expense(db.Model):
         db.session.flush()
         db.session.refresh(self)
         db.session.close()
-
-    @classmethod
-    def isAdmin(cls, user_id):
-        adminUser = db.session.query(User).filter(User.id == user_id).first()
-        return adminUser.admin 
         
-
     @classmethod
     def update_to_db(self):
         db.session.commit()
@@ -115,18 +109,17 @@ class Expense(db.Model):
     
     @classmethod
     def update_by_userid_and_expenseid(cls, user_id, expense_id, data):
-        value_usd = '%.2f'%(int(data['value'])/300)
-        expense = cls.query.filter_by(user_id = user_id, id=expense_id).first()
-        expense.title = data['title']
-        expense.private = data['private']
-        expense.currency = data['currency']
-        expense.value = data['value']
-        expense.valueUSD = value_usd
-        expense.latitude = data['latitude']
-        expense.longitude = data['longitude']
-        expense.address = data['address']
+        expense = cls.query.filter_by(user_id = user_id, id = expense_id).first()
+        expense.title =      data['title']
+        expense.private =    data['private']
+        expense.currency =   data['currency']
+        expense.value =      data['value']
+        expense.valueUSD =   '%.2f'%(int(data['value'])/300)
+        expense.latitude =   data['latitude']
+        expense.longitude =  data['longitude']
+        expense.address =    data['address']
         expense.categoryID = data['categoryID']
-        expense.date = data['date']
+        expense.date =       data['date']
         db.session.commit()
 
 
@@ -198,10 +191,8 @@ class Expense(db.Model):
         pass
         delete_expense =  cls.query.filter_by(user_id = user_id, id=expense_id).first() 
         # the following  statement will report an error. Please do not use this statement
-        # cls.query.filter_by(user_id = user_id, id=expense_id).first().delete()
-        # print(delete_expense)
+        cls.query.filter_by(user_id = user_id, id=expense_id).delete()
         if delete_expense != None:
-            db.session.delete(delete_expense)
             db.session.commit()   
             return 'Your expense {} was success delete'.format(expense_id)  
         else:

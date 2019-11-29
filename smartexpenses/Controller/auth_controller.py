@@ -29,9 +29,7 @@ class UserRegistration(Resource):
 
         try:
             new_user.save_to_db()
-           
             new_user_profile = Profile(
-            
                 total_spendings = 0,
                 color = '#00BFFF',
                 notifications = True,
