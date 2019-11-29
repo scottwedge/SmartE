@@ -35,7 +35,7 @@ class Profile(db.Model):
         cur_profile = cls.query.filter_by(user_id=user_id).first()
         cur_profile.color= data["color"]
         cur_profile.notifications = cls.str_to_bool(data["notifications"])
-        cur_profile.profile_image = data["profile_image"]
+        cur_profile.profile_image =bytes(data["profile_image"], encoding='utf8') 
         cur_profile.num_latest_spendings = data["num_latest_spendings"]
         db.session.commit()
         db.session.close()
@@ -71,8 +71,8 @@ class Profile(db.Model):
                     'notifications':x.notifications,
                     'num_latest_spendings':x.num_latest_spendings,
                     'profile_image':json.dumps((x.profile_image).decode("utf-8")),
-                    'privacy_url ':'privacy_url ',
-                    'terms_and_conditions_url ': 'terms_and_conditions_url '
+                    'privacy_url ':'https://www.opentracker.net/article/how-write-website-privacy-policy ',
+                    'terms_and_conditions_url ': 'https://help.opentracker.net/collection/11-help '
                 }          
             return list(map(lambda x: to_json(x), profile))
         else:

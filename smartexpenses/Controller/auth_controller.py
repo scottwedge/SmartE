@@ -5,6 +5,7 @@ from flask_jwt_extended import (create_refresh_token, jwt_refresh_token_required
 from smartexpenses.Model.user import User
 from smartexpenses.Model.profile import Profile
 from smartexpenses.Model import RevokedTokenModel
+import json
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', help = 'This field cannot be blank', required = True)
@@ -27,13 +28,15 @@ class UserRegistration(Resource):
         )
 
         try:
-            new_user.save_to_db()  
+            new_user.save_to_db()
+           
             new_user_profile = Profile(
+            
                 total_spendings = 0,
                 color = '#00BFFF',
                 notifications = True,
                 num_latest_spendings = 1,
-                profile_image = '',
+                profile_image = bytes("1", encoding='utf8'),
                 user_id = new_user.id
             ) 
             new_user_profile.save_to_db()
