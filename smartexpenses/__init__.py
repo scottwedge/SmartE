@@ -51,13 +51,13 @@ api.add_resource(auth_controller.SecretResource,    '/secret')
 
 api.add_resource(profiles_controller.GetProfile, '/user/get-profile')
 
-api.add_resource(expenses_controller.AdminAllExpenses,       '/expense/all/admin')
-api.add_resource(expenses_controller.AllExpenses,       '/expense/all')
-api.add_resource(expenses_controller.AddExpense,        '/expense/add')
-api.add_resource(expenses_controller.GetExpense,        '/expense/<expense_id>')
-api.add_resource(expenses_controller.GetRecentExpenses, '/expense/recent/<number>')
-api.add_resource(expenses_controller.UpdateExpense,     '/expense/update/<expense_id>')
-api.add_resource(expenses_controller.DeleteExpense,     '/expense/delete/<expense_id>')
+api.add_resource(expenses_controller.AdminAllExpenses,   '/expense/all/admin')
+api.add_resource(expenses_controller.AllExpenses,        '/expense/all')
+api.add_resource(expenses_controller.AddExpense,         '/expense/add')
+api.add_resource(expenses_controller.GetExpense,         '/expense/<expense_id>')
+api.add_resource(expenses_controller.GetRecentExpenses,  '/expense/recent/<number>')
+api.add_resource(expenses_controller.UpdateExpense,      '/expense/update/<expense_id>')
+api.add_resource(expenses_controller.DeleteExpense,      '/expense/delete/<expense_id>')
 api.add_resource(expenses_controller.GetExpenseLocation, '/expense/get-locations')
 
 
