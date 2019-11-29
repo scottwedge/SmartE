@@ -11,8 +11,6 @@ parser.add_argument('notifications', help = 'This field cannot be blank', requir
 parser.add_argument('profile_image', help = 'This field cannot be blank', required = True)
 parser.add_argument('num_latest_spendings', help = 'This field cannot be blank', required = True)
 
-
-
 class GetProfile(Resource):
     @jwt_refresh_token_required
     def get(self):
@@ -25,7 +23,7 @@ class GetProfile(Resource):
             }
         except Exception as error:
             return { 
-                'message': repr(error),
+                'message' : repr(error),
                 'status' : 1
             }, 500
 
@@ -37,13 +35,12 @@ class UpdateProfile(Resource):
         data = parser.parse_args()
         try:
             Profile.update_profile_by_user_id(user_id,data)
-            return{
-                # 'Profile':Profile.return_profile_by_user_id(user_id),
-                'message':'Your profile was updated',
-                'status':0
-            },200
+            return {
+                'message' : 'Your profile was updated',
+                'status' : 0
+            }, 200
         except Exception as error:
-            return{
-                'message':repr(error),
-                'status':1
-            },500
+            return {
+                'message' : repr(error),
+                'status' : 1
+            }, 500
