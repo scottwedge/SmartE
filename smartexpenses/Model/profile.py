@@ -76,4 +76,4 @@ class Profile(db.Model):
                 }          
             return list(map(lambda x: to_json(x), profile))
         else:
-            return 'no such this user profile'
+            return 'Such profile does not exist'
