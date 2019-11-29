@@ -35,7 +35,7 @@ class Profile(db.Model):
         cur_profile = cls.query.filter_by(user_id=user_id).first()
         cur_profile.color= data["color"]
         cur_profile.notifications = cls.str_to_bool(data["notifications"])
-        cur_profile.profile_image =bytes(data["profile_image"], encoding='utf8') 
+        cur_profile.profile_image =     bytes(data["profile_image"], encoding='utf8') 
         cur_profile.num_latest_spendings = data["num_latest_spendings"]
         db.session.commit()
         db.session.close()
@@ -62,18 +62,15 @@ class Profile(db.Model):
     def return_profile_by_user_id(cls, user_id):
         profile = cls.query.filter_by(user_id=user_id).all()
         if profile:
-            def to_json(x):
-                return{
-
-                    'user_id':x.user_id,
-                    'total_spendings': Profile.call_total_spendings(user_id),
-                    'color':x.color,
-                    'notifications':x.notifications,
-                    'num_latest_spendings':x.num_latest_spendings,
-                    'profile_image':json.dumps((x.profile_image).decode("utf-8")),
-                    'privacy_url ':'https://www.opentracker.net/article/how-write-website-privacy-policy ',
-                    'terms_and_conditions_url ': 'https://help.opentracker.net/collection/11-help '
-                }          
-            return list(map(lambda x: to_json(x), profile))
+            return{
+               'user_id':profile[0].user_id,
+                'total_spendings': Profile.call_total_spendings(user_id),
+                'color':profile[0].color,
+                'notifications':profile[0].notifications,
+                'num_latest_spendings':profile[0].num_latest_spendings,
+                'profile_image':json.dumps((profile[0].profile_image).decode("utf-8")),
+                'privacy_url ':'https://www.opentracker.net/article/how-write-website-privacy-policy ',
+                'terms_and_conditions_url ': 'https://help.opentracker.net/collection/11-help ' 
+            }
         else:
             return 'Such profile does not exist'
