@@ -20,7 +20,7 @@ class GetProfile(Resource):
         user_id = User.find_by_email(token_email).id
         try:
             return {
-                'messages' : Profile.return_profile_by_user_id(user_id),
+                'profile' : Profile.return_profile_by_user_id(user_id),
                 'status' : 0
             }
         except Exception as error:

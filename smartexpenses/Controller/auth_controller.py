@@ -33,7 +33,7 @@ class UserRegistration(Resource):
                 color = '#00BFFF',
                 notifications = True,
                 num_latest_spendings = 1,
-                profile_image = 'http://5b0988e595225.cdn.sohucs.com/images/20190324/26b14ff8956b4661a456a7e6751ce085.jpeg',
+                profile_image = '',
                 user_id = new_user.id
             ) 
             new_user_profile.save_to_db()

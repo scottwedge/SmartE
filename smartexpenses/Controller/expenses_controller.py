@@ -67,7 +67,7 @@ class GetExpense(Resource):
         user_id = User.find_by_email(token_email).id
         try:
             return {
-                'expenses' : Expense.find_by_userid_and_expenseid(user_id, expense_id),
+                'expense' : Expense.find_by_userid_and_expenseid(user_id, expense_id),
                 'status' : 0
             }
         except Exception as error:

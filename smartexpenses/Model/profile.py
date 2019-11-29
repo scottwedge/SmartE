@@ -13,7 +13,7 @@ class Profile(db.Model):
     color =                 db.Column(db.String(100),nullable=False)
     notifications =         db.Column(db.Boolean, nullable=False)
     num_latest_spendings =  db.Column(db.Integer, nullable=False)
-    profile_image =         db.Column(db.String(200), nullable=False)
+    profile_image =         db.Column(db.LargeBinary(16777216), nullable=False)
     user_id =               db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, index=True, nullable=False)
     user =                  db.relationship('User', backref='profiles', lazy=True)
    
@@ -64,12 +64,13 @@ class Profile(db.Model):
         if profile:
             def to_json(x):
                 return{
+
                     'user_id':x.user_id,
                     'total_spendings': Profile.call_total_spendings(user_id),
                     'color':x.color,
                     'notifications':x.notifications,
                     'num_latest_spendings':x.num_latest_spendings,
-                    'profile_image':x.profile_image,
+                    'profile_image':json.dumps((x.profile_image).decode("utf-8")),
                     'privacy_url ':'privacy_url ',
                     'terms_and_conditions_url ': 'terms_and_conditions_url '
                 }          
