@@ -8,13 +8,13 @@ import json
 
 class Profile(db.Model):
     __tablename__ = 'profiles'
-    id =                    db.Column(db.Integer, primary_key=True)
-    total_spendings =       db.Column(db.Float, nullable=False)
-    color =                 db.Column(db.String(100),nullable=False)
-    notifications =         db.Column(db.Boolean, nullable=False)
-    num_latest_spendings =  db.Column(db.Integer, nullable=False)
-    profile_image =         db.Column(db.Text, nullable=False)
-    user_id =               db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, index=True, nullable=False)
+    id =                    db.Column(db.Integer,     primary_key=True)
+    total_spendings =       db.Column(db.Float,       nullable=False)
+    color =                 db.Column(db.String(100), nullable=False)
+    notifications =         db.Column(db.Boolean,     nullable=False)
+    num_latest_spendings =  db.Column(db.Integer,     nullable=False)
+    profile_image =         db.Column(db.Text,        nullable=False)
+    user_id =               db.Column(db.Integer,     db.ForeignKey('users.id'), unique=True, index=True, nullable=False)
     user =                  db.relationship('User', backref='profiles', lazy=True)
    
     def save_to_db(self):
