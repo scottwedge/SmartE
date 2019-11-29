@@ -188,15 +188,17 @@ class Expense(db.Model):
 
     @classmethod
     def delete_by_user_id(cls, user_id, expense_id):
-        pass
-        delete_expense =  cls.query.filter_by(user_id = user_id, id=expense_id).first() 
-        # the following  statement will report an error. Please do not use this statement
-        cls.query.filter_by(user_id = user_id, id=expense_id).delete()
-        if delete_expense != None:
-            db.session.commit()   
-            return 'Your expense {} was success delete'.format(expense_id)  
-        else:
-            return 'No expense with id: {}'.format(expense_id)
+        try:
+            cls.query.filter_by(user_id = user_id, id = expense_id).delete()
+            return {
+                'message' : 'Expense {} was deleted'.format(expense_id),
+                'status' : 0
+            }
+        except Exception as error:
+            return {
+                'message': repr(error),
+                'status' : 1
+            }
             
         
     @classmethod
