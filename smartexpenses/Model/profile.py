@@ -8,7 +8,6 @@ class Profile(db.Model):
     total_spendings =       db.Column(db.Float,       nullable=False)
     num_latest_spendings =  db.Column(db.Float,       nullable=False)
     color =                 db.Column(db.String(100), nullable=False)
-    notifications =         db.Column(db.Boolean,     nullable=False)
     image =                 db.Column(db.Text,        nullable=False)
     user_id =               db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, index=True, nullable=False)
     user =                  db.relationship('User', backref='profiles', lazy=True)
@@ -50,7 +49,6 @@ class Profile(db.Model):
                 'user_id' : profile.user_id,
                 'total_spendings' : profile.total_spendings,
                 'color' : profile.color,
-                'notifications' : profile.notifications,
                 'num_latest_spendings' : profile.num_latest_spendings,
                 'image' : profile.image,
                 'privacy_url' : 'https://www.opentracker.net/article/how-write-website-privacy-policy',

@@ -34,7 +34,6 @@ class UserRegistration(Resource):
                 num_latest_spendings = 1,
                 image = "",
                 color = "#ffffff",
-                notifications = True,
                 user_id = new_user.id
             ) 
             new_user_profile.save_to_db()
