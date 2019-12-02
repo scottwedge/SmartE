@@ -49,8 +49,9 @@ api.add_resource(user_controller.UserLogoutRefresh, '/logout')
 api.add_resource(user_controller.AllUsers,          '/users')
 api.add_resource(user_controller.SecretResource,    '/secret')
 
-api.add_resource(profiles_controller.GetProfile,         '/user/profile')
-api.add_resource(profiles_controller.UpdateProfile,      '/user/profile/update')
+api.add_resource(profiles_controller.GetProfile,            '/user/profile')
+api.add_resource(profiles_controller.UpdateNumberAndColor,  '/user/profile/update')
+api.add_resource(profiles_controller.UpdateImage,           '/user/profile/update/img')
 
 api.add_resource(expenses_controller.AdminAllExpenses,   '/expense/all/admin')
 api.add_resource(expenses_controller.AllExpenses,        '/expense/all')
