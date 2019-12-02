@@ -16,6 +16,10 @@ class Profile(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def db_session_commit(self):
+        db.session.commit()
+        db.session.close()
+
     @classmethod
     def update_profile_by_user_id(cls, user_id, data):
         profile = cls.query.filter_by(user_id = user_id).first()
@@ -23,15 +27,13 @@ class Profile(db.Model):
         profile.notifications =         data["notifications"]
         profile.image =                 data["profile_image"]
         profile.num_latest_spendings =  data["num_latest_spendings"]
-        db.session.commit()
-        db.session.close()
+        db_session_commit()
 
     @classmethod
-    def update_total_spendings(cls, user_id):
-        total_spendings = Profile.get_total_spendings(user_id)  
-        profile = cls.query.filter_by(user_id=user_id).scalar()
-        profile.total_spendings = total_spendings
-        profile.update_to_db()
+    def update_total_spendings(cls, user_id, value):
+        profile = cls.query.filter_by(user_id=user_id).first()
+        profile.total_spendings += value
+        db_session_commit()
 
     @classmethod
     def get_total_spendings(cls, user_id):

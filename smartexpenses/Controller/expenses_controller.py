@@ -115,7 +115,7 @@ class AddExpense(Resource):
         )
         try:
             new_expense.refresh_record_in_db()
-            Profile.update_total_spendings(user_id)         
+            Profile.update_total_spendings(user_id, value)         
             return { 
                 'expense' : Expense.find_by_userid_and_expenseid(user_id, new_expense.id),
                 'message':'Your expense {} was created'.format(data['title']),
