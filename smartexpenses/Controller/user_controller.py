@@ -27,6 +27,8 @@ class UserRegistration(Resource):
                 password = User.generate_hash(data['password']),
                 admin = 0
             )
+            new_user.save_to_db()
+
             new_user_profile = Profile(
                 total_spendings = 0,
                 num_latest_spendings = 1,
@@ -34,8 +36,8 @@ class UserRegistration(Resource):
                 color = "#ffffff",
                 user_id = new_user.id
             ) 
-            new_user.save_to_db()
             new_user_profile.save_to_db()
+            
             refresh_token = create_refresh_token(identity = data['email'])
             return {
                 'message': 'User {} was created'.format(data['email']),
