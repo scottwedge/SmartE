@@ -6,9 +6,9 @@ from smartexpenses.Model.user import User
 from smartexpenses.Model.profile import Profile
 
 parser = reqparse.RequestParser()
-parser.add_argument('color',                help = 'This field cannot be blank', required = True)
-parser.add_argument('image',                help = 'This field cannot be blank', required = True)
-parser.add_argument('num_latest_spendings', help = 'This field cannot be blank', required = True)
+parser.add_argument('color')
+parser.add_argument('image')
+parser.add_argument('num_latest_spendings')
 
 class GetProfile(Resource):
     @jwt_refresh_token_required
