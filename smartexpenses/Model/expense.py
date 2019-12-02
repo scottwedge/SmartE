@@ -50,12 +50,11 @@ class Expense(db.Model):
                 'categoryID' : x.categoryID,
                 'date' : x.date
             }
-        # return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).all()))
         return list(map(lambda x: to_json(x), cls.query.filter_by(user_id=user_id).order_by(Expense.date.desc()).all()))
 
 
     @classmethod
-    def get_expense_location(cls,user_id):
+    def get_expense_location(cls, user_id):
         def to_json(x):
             return {
             'id' : x.id,
@@ -126,7 +125,6 @@ class Expense(db.Model):
     @classmethod
     def find_recents_by_user_id(cls, num, user_id):
         expenses = cls.query.filter_by(user_id = user_id).order_by(cls.date.desc()).limit(num).all() 
-        # print(expenses)
         allImageUrl = [
             {
                 "id" : 1,
@@ -180,7 +178,6 @@ class Expense(db.Model):
                 'categoryID' : x.categoryID,
                 'date' : x.date
             }
-        # please clearful the place of return, do not change return 
         return {
             'expenses': list(map(lambda x: to_json(x), expenses)),
             'images':allImageUrl
