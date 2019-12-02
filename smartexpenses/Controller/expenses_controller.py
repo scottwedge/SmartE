@@ -98,7 +98,7 @@ class AddExpense(Resource):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email).id
         data = parser.parse_args()
-        value_usd = '%.2f'%(int(data['value'])/300)
+        value_usd = '%.2f'%(float(data['value'])/300)
 
         new_expense = Expense(
             title = data['title'],
@@ -115,7 +115,7 @@ class AddExpense(Resource):
         )
         try:
             new_expense.refresh_record_in_db()
-            Profile.update_total_spendings(user_id, data['value'])         
+            Profile.update_total_spendings(user_id, float(data['value']))   
             return { 
                 'expense' : Expense.find_by_userid_and_expenseid(user_id, new_expense.id),
                 'message':'Your expense {} was created'.format(data['title']),
