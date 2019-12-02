@@ -33,10 +33,12 @@ class UpdateNumberAndColor(Resource):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email).id
         data = parser.parse_args()
+        color = data['color']
+        number_of_spendings = data['num_latest_spendings']
         try:
-            Profile.update_profile_by_user_id(user_id, data)
+            Profile.update_profile_by_user_id(user_id, color, number_of_spendings)
             return {
-                'message' : 'Your profile was updated',
+                'message' : 'Your profile color and number of latest spenings was updated',
                 'status' : 0
             }, 200
         except Exception as error:
@@ -50,11 +52,11 @@ class UpdateImage(Resource):
     def put(self):
         token_email = get_jwt_identity()
         user_id = User.find_by_email(token_email).id
-        data = parser.parse_args()
+        image = parser.parse_args()['image']
         try:
-            Profile.update_profile_by_user_id(user_id,data)
+            Profile.update_profile_image_by_user_id(user_id, image)
             return {
-                'message' : 'Your profile was updated',
+                'message' : 'Your profile image was updated',
                 'status' : 0
             }, 200
         except Exception as error:

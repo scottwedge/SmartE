@@ -22,12 +22,16 @@ class Profile(db.Model):
         db.session.close()
 
     @classmethod
-    def update_profile_by_user_id(cls, user_id, data):
+    def update_profile_by_user_id(cls, user_id, color, number):
         profile = cls.query.filter_by(user_id = user_id).first()
-        profile.color =                 data["color"]
-        profile.notifications =         data["notifications"]
-        profile.image =                 data["profile_image"]
-        profile.num_latest_spendings =  data["num_latest_spendings"]
+        profile.color = color
+        profile.num_latest_spendings = number
+        cls.db_session_commit()
+
+    @classmethod
+    def update_profile_image_by_user_id(cls, user_id, image):
+        profile = cls.query.filter_by(user_id = user_id).first()
+        profile.image = image
         cls.db_session_commit()
 
     @classmethod
