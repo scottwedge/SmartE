@@ -16,6 +16,7 @@ class Profile(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    @classmethod
     def db_session_commit(self):
         db.session.commit()
         db.session.close()
@@ -27,13 +28,13 @@ class Profile(db.Model):
         profile.notifications =         data["notifications"]
         profile.image =                 data["profile_image"]
         profile.num_latest_spendings =  data["num_latest_spendings"]
-        db_session_commit()
+        cls.db_session_commit()
 
     @classmethod
     def update_total_spendings(cls, user_id, value):
         profile = cls.query.filter_by(user_id=user_id).first()
         profile.total_spendings += value
-        db_session_commit()
+        cls.db_session_commit()
 
     @classmethod
     def get_total_spendings(cls, user_id):
