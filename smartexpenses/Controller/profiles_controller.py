@@ -37,7 +37,7 @@ class UpdateNumberAndColor(Resource):
         try:
             Profile.update_profile_by_user_id(user_id, color, number_of_spendings)
             return {
-                'message' : 'Your profile color and number of latest spenings was updated',
+                'message' : 'Your profile color and number of latest spendings was updated.',
                 'status' : 0
             }, 200
         except Exception as error:
