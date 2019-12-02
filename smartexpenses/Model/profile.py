@@ -56,7 +56,7 @@ class Profile(db.Model):
                 'color' : profile.color,
                 'notifications' : profile.notifications,
                 'num_latest_spendings' : profile.num_latest_spendings,
-                'profile_image' : profile.image,
+                'image' : profile.image,
                 'privacy_url' : 'https://www.opentracker.net/article/how-write-website-privacy-policy',
                 'terms_and_conditions_url' : 'https://help.opentracker.net/collection/11-help ' 
             }

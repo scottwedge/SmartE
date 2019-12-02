@@ -8,7 +8,7 @@ from smartexpenses.Model.profile import Profile
 parser = reqparse.RequestParser()
 parser.add_argument('color', help = 'This field cannot be blank', required = True)
 parser.add_argument('notifications', help = 'This field cannot be blank', required = True)
-parser.add_argument('profile_image', help = 'This field cannot be blank', required = True)
+parser.add_argument('image', help = 'This field cannot be blank', required = True)
 parser.add_argument('num_latest_spendings', help = 'This field cannot be blank', required = True)
 
 class GetProfile(Resource):
