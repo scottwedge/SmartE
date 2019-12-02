@@ -31,10 +31,10 @@ class UserRegistration(Resource):
             new_user.save_to_db()
             new_user_profile = Profile(
                 total_spendings = 0,
-                color = '#00BFFF',
-                notifications = True,
                 num_latest_spendings = 1,
-                profile_image = bytes("1", encoding='utf8'),
+                image = "",
+                color = "#ffffff",
+                notifications = True,
                 user_id = new_user.id
             ) 
             new_user_profile.save_to_db()
@@ -43,7 +43,7 @@ class UserRegistration(Resource):
                 'message': 'User {} was created'.format(data['email']),
                 'refresh_token': refresh_token,
                 'status' : 0
-                }, 200
+            }, 200
         except Exception as error:
             return {
                 'message': repr(error),
